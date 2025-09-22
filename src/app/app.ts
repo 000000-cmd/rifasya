@@ -1,6 +1,8 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-
+/**
+ *  Logica Global y tranversal del resto de vistas
+ */
 @Component({
   selector: 'app-root',
   standalone: true,

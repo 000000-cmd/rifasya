@@ -1,17 +1,25 @@
 import { Routes } from '@angular/router';
-import { Home } from './Views/home/home.component';
-import { Contact } from './Views/contact/contact.component';
-
+import { Home } from './features/home/home.component';
+import { Contact } from './features/contact/contact.component';
+import { DefaultLayoutComponent } from './layout/default-Layout.component';
+import { AuthLayoutComponent } from './layout/auth-layout.component';
 
 
 export const routes: Routes = [
-    { path: 'home', component: Home },
-    { path: 'contact', component: Contact},
-
-
-    // Ruta vacía → redirige a home
-    { path: '', redirectTo: 'home', pathMatch: 'full' },
-
-    // Ruta no encontrada → página 404
-    { path: '**', component: Home } // luego puedes crear un NotFoundComponent
+  {
+    path: '',
+    component: DefaultLayoutComponent,
+    children: [
+      { path: '', component: Home },
+      { path: 'dashboard', component: Contact },
+    ]
+  },
+  {
+    path: '',
+    component: AuthLayoutComponent,
+    children: [
+    //  { path: 'login', component: "login" },
+    //  { path: 'register', component: "register" },
+    ]
+  }
 ];
