@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {RouterLink, RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-default-layout',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, RouterLink],
   template: `
   <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b shadow-sm">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -24,7 +24,7 @@ import { RouterOutlet } from '@angular/router';
           <a href="#" class="text-gray-700 hover:text-purple-600 transition-colors">Rifas Activas</a>
           <a href="#" class="text-gray-700 hover:text-purple-600 transition-colors">Ganadores</a>
           <a href="#" class="text-gray-700 hover:text-purple-600 transition-colors">Cómo Funciona</a>
-          <a href="#" class="text-gray-700 hover:text-purple-600 transition-colors">Contacto</a></nav>
+          <a routerLink="/contact" class="text-gray-700 hover:text-purple-600 transition-colors">Contacto</a></nav>
           <div class="flex items-center space-x-4">
             <button data-slot="button" class="items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 h-8 rounded-md gap-1.5 px-3 has-[&gt;svg]:px-2.5 hidden sm:flex">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user w-4 h-4 mr-2" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>Iniciar Sesión</button>

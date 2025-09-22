@@ -1,7 +1,6 @@
 import { Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 
-
 @Component({
   selector: 'contact',                // nombre de la etiqueta
   standalone: true,                    // ← standalone obligatorio
@@ -12,6 +11,4 @@ import { RouterOutlet } from "@angular/router";
 
 export class Contact{
     title= 'Bienvenido'
-
-    
 }

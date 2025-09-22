@@ -11,7 +11,7 @@ export const routes: Routes = [
     component: DefaultLayoutComponent,
     children: [
       { path: '', component: Home },
-      { path: 'dashboard', component: Contact },
+      { path: 'contact', component: Contact },
     ]
   },
   {

@@ -15,3 +15,5 @@ export class App {
 
   protected readonly footer = signal('Footer Content')
 }
+
+
