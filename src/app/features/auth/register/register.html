@@ -1,0 +1,185 @@
+<main
+    class="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div class="absolute inset-0 overflow-hidden">
+        <div
+            class="absolute -top-40 -right-32 w-96 h-96 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl animate-float">
+        </div>
+        <div
+            class="absolute -bottom-40 -left-32 w-96 h-96 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-float delay-[1000ms]">
+        </div>
+
+        <!-- Floating particles -->
+        <div class="absolute top-20 left-20 w-3 h-3 bg-purple-400 rounded-full animate-bounce"></div>
+        <div class="absolute top-40 right-32 w-2 h-2 bg-pink-400 rounded-full animate-bounce delay-[500ms]"></div>
+        <div class="absolute bottom-32 left-40 w-3 h-3 bg-blue-400 rounded-full animate-bounce delay-[1000ms]"></div>
+        <div class="absolute bottom-20 right-20 w-2 h-2 bg-yellow-400 rounded-full animate-bounce delay-[1500ms]"></div>
+
+    </div>
+    <div class="relative max-w-4xl mx-auto ">
+
+        <div class="text-center mb-8">
+            <div class="flex items-center justify-center space-x-3 mb-6 group">
+                <div class="relative">
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-purple-600 via-pink-500 to-purple-700 rounded-2xl flex items-center justify-center transform group-hover:scale-110 transition-all duration-300 animate-glow">
+                        <lucide-angular [img]="Gift" class="w-10 h-10 text-white"></lucide-angular>
+                    </div>
+                    <div
+                        class="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center animate-pulse">
+                        <lucide-angular [img]="Sparkles" class="w-3 h-3 text-yellow-900"></lucide-angular>
+                    </div>
+                </div>
+                <div>
+                    <h1
+                        class="text-4xl font-black bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600 bg-clip-text text-transparent">
+                        RifasYA
+                    </h1>
+                    <p class="text-purple-500 font-bold -mt-1">¡Tu suerte te espera!</p>
+                </div>
+            </div>
+
+            <badge variant="default"
+                class="mb-4 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 border-purple-200 shadow-lg">
+                <lucide-angular [img]="Crown" class="w-4 h-4 mr-2 text-yellow-500"></lucide-angular>
+                Únete a la Comunidad
+            </badge>
+
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 mb-4">
+                Crea tu
+                <span class="bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600 bg-clip-text text-transparent">
+                    Cuenta Gratis
+                </span>
+            </h2>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Regístrate hoy y participa en rifas increíbles con
+                <span class="text-purple-600 font-bold">premios que cambiarán tu vida</span>
+            </p>
+        </div>
+
+
+        <app-card class="shadow-2xl border-2 border-purple-100 bg-white/90 backdrop-blur-sm  ">
+            <div card-header class=" ">
+                <div class="flex items-center justify-center space-x-8 mb-6 w-full">
+                    <div class="flex items-center space-x-2 text-green-600">
+                        <lucide-angular [img]="Shield" class="my-icon"></lucide-angular>
+                        <span class="font-bold">100% Seguro</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-purple-600">
+                        <lucide-icon [img]="Zap" name="zap"></lucide-icon>
+                        <span class="font-bold">Registro Rápido</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-orange-600">
+                        <lucide-icon [img]="Star" name="star"></lucide-icon>
+                        <span class="font-bold">Sin Costo</span>
+                    </div>
+                </div>
+            </div>
+            <div card-content class="p-8">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <base-input formControlName="firstName" placeholder="Tu nombre" [iconLabel]="User"
+                             label="Nombre" ></base-input>
+                        <base-input formControlName="lastName" placeholder="Tu apellido" [iconLabel]="User" label="Apellido"></base-input>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <base-input formControlName="email" placeholder="Tu correo electronico" [iconLabel]="Mail"
+                            label="Correo electronico"></base-input>
+                        <base-input mask="000 0000000" formControlName="phone" placeholder="Tu teléfono" [iconLabel]="Phone" label="Teléfono"></base-input>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <base-input type="date" formControlName="birthDate" placeholder="Fecha de Nacimiento" [iconLabel]="Calendar"
+                            label="Fecha de Nacimiento"></base-input>
+                        <base-input formControlName="city" placeholder="Ciudad" [iconLabel]="MapPin" label="Ciudad"></base-input>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <base-input type="password" formControlName="password" placeholder="Contraseña" [iconLabel]="Lock"
+                            label="Tu contraseña segura"></base-input>
+                        <base-input type="password" formControlName="confirmPassword" placeholder="Confirmar Contraseña" [iconLabel]="Lock"
+                            label="Confirma tu contraseña"></base-input>
+                    </div>
+
+                    <!-- Caja con gradiente -->
+                    <div
+                        class="space-y-4 bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-2xl border border-purple-100">
+                        <!-- Checkbox: Terms -->
+                        <div class="flex items-start space-x-3">
+                            <input id="acceptTerms" type="checkbox" formControlName="acceptTerms"
+                                class="mt-1 w-4 h-4 border-gray-300 rounded text-purple-600 focus:ring-purple-500" />
+                            <label for="acceptTerms" class="text-gray-700 leading-relaxed">
+                                Acepto los
+                                <a href="#" class="text-purple-600 font-bold hover:text-purple-700 underline">
+                                    Términos y Condiciones
+                                </a>
+                                y la
+                                <a href="#" class="text-purple-600 font-bold hover:text-purple-700 underline">
+                                    Política de Privacidad
+                                </a>
+                                de RifasYA
+                            </label>
+                        </div>
+
+                        @if (form.get('acceptTerms')?.invalid && form.get('acceptTerms')?.touched) {
+                        <p class="text-red-500 text-sm ml-7">
+                            Debes aceptar los Términos y Condiciones
+                        </p>
+                        }
+
+                        <!-- Checkbox: Marketing -->
+                        <div class="flex items-start space-x-3">
+                            <input id="acceptMarketing" type="checkbox" formControlName="acceptMarketing"
+                                class="mt-1 w-4 h-4 border-gray-300 rounded text-purple-600 focus:ring-purple-500" />
+                            <label for="acceptMarketing" class="text-gray-700 leading-relaxed">
+                                Quiero recibir notificaciones sobre nuevas rifas y ofertas especiales
+                            </label>
+                        </div>
+
+
+                    </div>
+                    <p class="text-sm text-gray-500">
+                        Form valid: {{ form.valid }} |
+                        Form invalid: {{ form.invalid }} |
+                        Form touched: {{ form.touched }}
+                    </p>
+
+                    <!-- Botón Submit -->
+                    <button type="submit" [disabled]="form.invalid"
+                    class="w-full flex items-center justify-center 
+                            bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600
+                            hover:from-purple-700 hover:via-pink-600 hover:to-purple-700
+                            text-lg py-4 font-black shadow-2xl hover:shadow-purple-400/50
+                            transition-all duration-300 hover:scale-105 
+                            relative overflow-hidden group rounded-lg text-white
+
+                            disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:hover:scale-100 disabled:hover:from-purple-600 disabled:hover:via-pink-500 disabled:hover:to-purple-600">
+                    
+                            <lucide-angular [img]="Crown" class="w-6 h-6 mr-3"></lucide-angular>
+                            <span class="relative z-10">Crear Mi Cuenta Gratis</span>
+  
+                            <div class="absolute inset-0 bg-gradient-to-r from-yellow-400
+                            to-orange-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                        </button>
+
+
+                    <div class="text-center">
+                        <p class="text-gray-600">
+                            ¿Ya tienes cuenta?
+                            <a href="#" class="text-purple-600 font-bold hover:text-purple-700 transition-colors">
+                                Inicia Sesión
+                            </a>
+                        </p>
+                    </div>
+                </form>
+
+            </div>
+        </app-card>
+
+
+
+    </div>
+
+    <router-outlet></router-outlet>
+</main>

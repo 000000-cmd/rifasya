@@ -1,25 +1,16 @@
 import { Component } from '@angular/core';
 import {RouterLink, RouterOutlet} from '@angular/router';
+import { LogoComponent } from '../shared/UI/logo.component';
 
 @Component({
   selector: 'app-default-layout',
   standalone: true,
-  imports: [RouterOutlet, RouterLink],
+  imports: [RouterOutlet, RouterLink, LogoComponent],
   template: `
   <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b shadow-sm">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        <div class="flex items-center space-x-2">
-          <div class="w-8 h-8 bg-[var(--primary-color)] rounded-lg flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gift w-5 h-5 text-white" aria-hidden="true">
-              <rect x="3" y="8" width="18" height="4" rx="1"></rect>
-              <path d="M12 8v13"></path>
-              <path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"></path>
-              <path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"></path>
-            </svg>
-          </div>
-          <span class="text-xl font-bold bg-[var(--primary-color)] bg-clip-text text-transparent">RifasYA</span>
-        </div>
+        <div class="flex items-center justify-between h-16">
+          <logo-component></logo-component>
         <nav class="hidden md:flex items-center space-x-8">
           <a href="#" class="text-gray-700 hover:text-purple-600 transition-colors">Rifas Activas</a>
           <a href="#" class="text-gray-700 hover:text-purple-600 transition-colors">Ganadores</a>
@@ -28,7 +19,7 @@ import {RouterLink, RouterOutlet} from '@angular/router';
           <div class="flex items-center space-x-4">
             <button data-slot="button" class="items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 h-8 rounded-md gap-1.5 px-3 has-[&gt;svg]:px-2.5 hidden sm:flex">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user w-4 h-4 mr-2" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>Iniciar Sesión</button>
-              <button data-slot="button" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2 has-[&gt;svg]:px-3 bg-[var(--primary-color)] ">
+              <button data-slot="button" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all focus-visible:ring-ring/50 focus-visible:ring-[3px] text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2 has-[&gt;svg]:px-3 bg-[var(--primary-color)] ">
                 Registrarse
               </button>
               <button data-slot="button" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 h-8 rounded-md gap-1.5 px-3 has-[&gt;svg]:px-2.5 md:hidden">
@@ -51,17 +42,7 @@ import {RouterLink, RouterOutlet} from '@angular/router';
         <div class="grid md:grid-cols-4 gap-8">
           <div class="md:col-span-1">
             <div class="flex items-center space-x-2 mb-4">
-                <div class="w-8 h-8 bg-[var(--primary-color)] rounded-lg flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="lucide lucide-gift w-5 h-5 text-white" aria-hidden="true">
-                    <rect x="3" y="8" width="18" height="4" rx="1"></rect>
-                    <path d="M12 8v13"></path>
-                    <path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"></path>
-                    <path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"></path>
-                  </svg>
-                </div>
-                <span class="text-xl font-bold bg-[var(--primary-color)] bg-clip-text text-transparent">RifasYA</span>
+                <logo-component></logo-component>
             </div>
 
             <p class="text-gray-400 mb-6">La plataforma de rifas más confiable de Colombia. Premios increíbles, sorteos transparentes y ganadores reales.</p>
