@@ -57,37 +57,49 @@ export class Register {
   readonly Calendar = Calendar;
   readonly MapPin = MapPin;
   readonly Lock = Lock;
-  readonly Card = IdCard; 
 
   private fb = inject(FormBuilder);
 
+
+
+
   form = this.fb.group({
-    firstName: ['', 
-    [
-      ValidadorInput(Validators.required),
+    firstName: this.fb.control<string | null>("", [
+      ValidadorInput(Validators.required, "Nombre"),
       ValidadorInput(Validators.minLength(2))
-    ] ],
-    lastName: ['', 
-    [
-      ValidadorInput(Validators.required), 
+    ]),
+    lastName: this.fb.control<string | null>("", [
+      ValidadorInput(Validators.required, "Segundo nombre"),
       ValidadorInput(Validators.minLength(2))
-    ]],
-    email: ['', 
-      [
-        ValidadorInput(Validators.required), 
-        ValidadorInput(Validators.email)
-      ]],
-    phone: ['', [
-      ValidadorInput(Validators.required),
-      ValidadorInput(Validators.pattern(/^\+?[1-9]{3} \d{1,14}$/)) // E.164
-    ]],
-    birthDate: ['', ValidadorInput(Validators.required)],
-    city: ['', [ValidadorInput(Validators.required), ValidadorInput(Validators.minLength(2))]],
-    password: ['', [ValidadorInput(Validators.required),ValidadorInput( Validators.minLength(8))]],
-    confirmPassword: ['', ValidadorInput(Validators.required)],
-    acceptTerms: [false, ValidadorInput(Validators.requiredTrue)],
-    acceptMarketing: [false],
-    tipoDoc: ['']
+    ]),
+    email: this.fb.control<string | null>("", [
+      ValidadorInput(Validators.required, "Correo"),
+      ValidadorInput(Validators.email)
+    ]),
+    phone: this.fb.control<string | null>("", [
+      ValidadorInput(Validators.required, "Telefono"),
+      ValidadorInput(Validators.pattern(/^\+?[1-9]{3} \d{1,14}$/)) // formato E.164
+    ]),
+    birthDate: this.fb.control<string | null>("", [
+      ValidadorInput(Validators.required, "Fecha de nacimiento")
+    ]),
+    city: this.fb.control<string | null>("", [
+      ValidadorInput(Validators.required, "Ciudad"),
+      ValidadorInput(Validators.minLength(2))
+    ]),
+    password: this.fb.control<string | null>("", [
+      ValidadorInput(Validators.required, "Contraseña"),
+      ValidadorInput(Validators.minLength(8))
+    ]),
+    confirmPassword: this.fb.control<string | null>("", [
+      ValidadorInput(Validators.required, "Contraseña")
+    ]),
+    acceptTerms: this.fb.control<boolean>(false, [
+      ValidadorInput(Validators.requiredTrue, "Terminos y Condiciones")
+    ]),
+    acceptMarketing: this.fb.control<boolean>(false),
+
+    docType : this.fb.control<string | null>("") 
   }, { validators: passwordMatchValidator });
 
   get f() {

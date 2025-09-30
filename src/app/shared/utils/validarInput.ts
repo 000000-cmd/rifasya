@@ -1,14 +1,14 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 
-export function  ValidadorInput  (validator: ValidatorFn, helperText: string = ""): ValidatorFn  {
+  export function ValidadorInput(validator: ValidatorFn, fieldName: string = "campo", helperText: string = ""): ValidatorFn  {
     return (control: AbstractControl): ValidationErrors | null => {
-      const result = validator(control); 
+      const result = validator(control); // ejecuta el validador real
       if (result) {
         if(helperText.trim() === "")
           for (const key in result) {
             switch (key) {
               case 'required':
-                helperText= `campo requerido.`
+                helperText= `${fieldName} requerido.`
                 break;
               case 'minlength':
                 const min = result['minlength'] as { requiredLength: number; actualLength: number };
