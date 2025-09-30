@@ -14,7 +14,7 @@ import { BaseInputLabel } from './input/label.component';
   ],
   template: `
   <div class="flex flex-col gap-2">
-    <label-input [id]="id" [icon]="iconLabel" [label]="label"  [control]="control" > 
+    <label-input [id]="id" [icon]="iconLabel" [label]="label"  [control]="control" >
     </label-input>
 
       <input
@@ -80,7 +80,6 @@ export class InputComponent implements ControlValueAccessor {
 
     return null;
   }
-
 
   // Métodos inyectados por ControlValueAccesor
 
