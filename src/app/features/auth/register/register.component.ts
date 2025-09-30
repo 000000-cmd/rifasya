@@ -32,7 +32,6 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
   }
 }
 
-
 @Component({
   selector: 'register',                // nombre de la etiqueta
   standalone: true,                    // ← standalone obligatorio
@@ -59,9 +58,6 @@ export class Register {
   readonly Lock = Lock;
 
   private fb = inject(FormBuilder);
-
-
-
 
   form = this.fb.group({
     firstName: this.fb.control<string | null>("", [
@@ -99,13 +95,12 @@ export class Register {
     ]),
     acceptMarketing: this.fb.control<boolean>(false),
 
-    docType : this.fb.control<string | null>("") 
+    docType : this.fb.control<string | null>("")
   }, { validators: passwordMatchValidator });
 
   get f() {
     return this.form.controls;
   }
-
 
   onSubmit() {
     if (this.form.valid) {
