@@ -79,26 +79,37 @@
 
                     <div class="grid md:grid-cols-2 gap-6">
                         <base-input formControlName="firstName" placeholder="Tu nombre" [iconLabel]="User"
-                             label="Nombre" ></base-input>
-                        <base-input formControlName="lastName" placeholder="Tu apellido" [iconLabel]="User" label="Apellido"></base-input>
+                            label="Nombre"></base-input>
+                        <base-input formControlName="lastName" placeholder="Tu apellido" [iconLabel]="User"
+                            label="Apellido"></base-input>
                     </div>
 
                     <div class="grid md:grid-cols-2 gap-6">
                         <base-input formControlName="email" placeholder="Tu correo electronico" [iconLabel]="Mail"
                             label="Correo electronico"></base-input>
-                        <base-input mask="000 0000000" formControlName="phone" placeholder="Tu teléfono" [iconLabel]="Phone" label="Teléfono"></base-input>
+                        <base-input mask="000 0000000" formControlName="phone" placeholder="Tu teléfono"
+                            [iconLabel]="Phone" label="Teléfono"></base-input>
                     </div>
 
                     <div class="grid md:grid-cols-2 gap-6">
-                        <base-input type="date" formControlName="birthDate" placeholder="Fecha de Nacimiento" [iconLabel]="Calendar"
-                            label="Fecha de Nacimiento"></base-input>
-                        <base-input formControlName="city" placeholder="Ciudad" [iconLabel]="MapPin" label="Ciudad"></base-input>
+                        <base-input type="date" formControlName="birthDate" placeholder="Fecha de Nacimiento"
+                            [iconLabel]="Calendar" label="Fecha de Nacimiento"></base-input>
+                        <base-input formControlName="city" placeholder="Ciudad" [iconLabel]="MapPin"
+                            label="Ciudad"></base-input>
                     </div>
 
                     <div class="grid md:grid-cols-2 gap-6">
-                        <base-input type="password" formControlName="password" placeholder="Contraseña" [iconLabel]="Lock"
-                            label="Tu contraseña segura"></base-input>
-                      <base-input type="password" formControlName="confirmPassword" placeholder="Confirmar Contraseña" label="Confirma tu contraseña" [iconLabel]="Lock"></base-input>
+                        <base-input type="password" formControlName="password" placeholder="Contraseña"
+                            [iconLabel]="Lock" label="Tu contraseña segura"></base-input>
+                        <base-input type="password" formControlName="confirmPassword" placeholder="Confirmar Contraseña"
+                            label="Confirma tu contraseña" [iconLabel]="Lock"></base-input>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <doc-select [control]="form.controls['tipoDoc']"></doc-select>
+
+   
+
                     </div>
 
                     <!-- Caja con gradiente -->
@@ -146,7 +157,7 @@
 
                     <!-- Botón Submit -->
                     <button type="submit" [disabled]="form.invalid"
-                    class="w-full flex items-center justify-center
+                        class="w-full flex items-center justify-center
                             bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600
                             hover:from-purple-700 hover:via-pink-600 hover:to-purple-700
                             text-lg py-4 font-black shadow-2xl hover:shadow-purple-400/50
@@ -155,12 +166,12 @@
 
                             disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:hover:scale-100 disabled:hover:from-purple-600 disabled:hover:via-pink-500 disabled:hover:to-purple-600">
 
-                            <lucide-angular [img]="Crown" class="w-6 h-6 mr-3"></lucide-angular>
-                            <span class="relative z-10">Crear Mi Cuenta Gratis</span>
+                        <lucide-angular [img]="Crown" class="w-6 h-6 mr-3"></lucide-angular>
+                        <span class="relative z-10">Crear Mi Cuenta Gratis</span>
 
-                            <div class="absolute inset-0 bg-gradient-to-r from-yellow-400
+                        <div class="absolute inset-0 bg-gradient-to-r from-yellow-400
                             to-orange-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                        </button>
+                    </button>
 
 
                     <div class="text-center">

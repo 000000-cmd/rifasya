@@ -1,37 +1,28 @@
 import { Component, Input, forwardRef, Optional, Self} from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, AbstractControl, FormGroupDirective, NgControl } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, AbstractControl, FormGroupDirective, NgControl, FormsModule } from '@angular/forms';
 import {BadgeAlert, BadgeCheck, LucideAngularModule, LucideIconData} from 'lucide-angular';
 import {  NgxMaskDirective, provideNgxMask } from 'ngx-mask';
-import {NgClass} from '@angular/common';
+import { BaseInputLabel } from './input/label.component';
 
 @Component({
   selector: 'base-input',
   standalone: true,
-  imports: [LucideAngularModule, NgxMaskDirective, NgClass],
+  imports: [LucideAngularModule, NgxMaskDirective, FormsModule, BaseInputLabel],
     providers: [
 
   provideNgxMask ()
   ],
   template: `
-    <div class="space-y-2">
-      <label [for]="id" class="flex items-center gap-2 font-bold text-gray-700">
-        <lucide-angular [img]="iconLabel" name="user" class="w-4 h-4 mr-2 text-purple-600"></lucide-angular>
-        {{ label }}
-        @if (control?.touched || control?.dirty) {
-          <lucide-angular
-            [img]="hasError ? invalidIcon : validIcon"
-            class="w-4 h-4 mr-2"
-            [ngClass]="hasError ? 'text-red-500' : 'text-green-600'">
-          </lucide-angular>
-        }
-      </label>
+  <div class="flex flex-col gap-2">
+    <label-input [id]="id" [icon]="iconLabel" [label]="label"  [control]="control" > 
+    </label-input>
 
       <input
         [id]="id"
         [type]="type"
         [mask]="mask"
         [placeholder]="placeholder"
-        [value]="value"
+        [(ngModel)]="value"
         (input)="onChange($event.target.value)"
         (blur)="onTouched()"
         class="border-2 rounded-md p-2.5 w-full min-w-0
@@ -93,13 +84,13 @@ export class InputComponent implements ControlValueAccessor {
 
   // Métodos inyectados por ControlValueAccesor
 
-  value: string = '';
+  value!: string;
 
   onChange = (value: string) => {};
   onTouched = () => {};
 
-  writeValue(value: string): void {
-    this.value = value || '';
+  writeValue(obj: any): void {
+    this.value = obj ?? ''; // aquí sí asignas lo que venga del FormControl
   }
 
   registerOnChange(fn: any): void {
