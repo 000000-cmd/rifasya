@@ -1,4 +1,4 @@
-import { DataFetch } from "../../shared/models/DataFetch";
+import { DataFetch } from "./data-fetch";
 import { environment } from "../../../environments/environments";
 
 export const API = environment.apiUrl
