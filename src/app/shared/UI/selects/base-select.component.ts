@@ -1,6 +1,6 @@
 import { Component, Input, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { ChevronDown, LucideAngularModule } from 'lucide-angular';
+import { ChevronDown, LucideAngularModule, LucideIconData } from 'lucide-angular';
 import { CommonModule } from '@angular/common';
 import { BaseInputLabel } from '../input/label.component';
 
@@ -16,7 +16,7 @@ interface SelectOption {
   template: `
   <div class="w-full  flex flex-col gap-2">
     <!-- Trigger -->
-    <label-input [label]="label" ></label-input>
+    <label-input [label]="label" [icon]="icon" ></label-input>
     <div class="relative">
       <button
         type="button"
@@ -34,7 +34,7 @@ interface SelectOption {
               data-[size=default]:h-9 data-[size=sm]:h-8"
       >
       <span class="truncate">{{ value || placeholder }}</span>
-      <lucide-angular [name]="icon" class="w-4 h-4 opacity-80"></lucide-angular>
+      <lucide-angular [img]="Chevron" class="w-4 h-4 opacity-80"></lucide-angular>
     </button>
 
     <!-- Content -->
@@ -58,7 +58,9 @@ export class BaseSelectComponent implements ControlValueAccessor {
   @Input() placeholder = 'Seleccione...';
   @Input() size: 'sm' | 'default' = 'default';
   @Input() label = '';
-  @Input() icon = ChevronDown;
+  @Input() icon!: LucideIconData;
+
+  readonly Chevron = ChevronDown;
 
   isOpen = false;
   value: any;

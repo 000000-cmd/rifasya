@@ -2,7 +2,7 @@ import { CommonModule } from "@angular/common";
 import {Component, inject, Optional, Self} from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { LogoComponent } from "../../../shared/UI/logo.component";
-import { LucideAngularModule, Shield, Zap, Star, Gift, Sparkles, Crown, User, Mail, Phone, Calendar, MapPin, Lock, IdCard } from 'lucide-angular';
+import { LucideAngularModule, Shield, Zap, Star, Gift, Sparkles, Crown, User, Mail, Phone, Calendar, MapPin, Lock, IdCard, IdCardIcon } from 'lucide-angular';
 import { InputComponent } from "../../../shared/UI/Input.component";
 import { BadgeComponent } from "../../../shared/UI/badge.component";
 import { CardComponent } from "../../../shared/UI/card/card.component";
@@ -57,6 +57,7 @@ export class Register {
   readonly Calendar = Calendar;
   readonly MapPin = MapPin;
   readonly Lock = Lock;
+  readonly Card = IdCardIcon;
 
   private fb = inject(FormBuilder);
 
@@ -79,6 +80,12 @@ export class Register {
     phone: this.fb.control<string | null>("", [
       ValidadorInput(Validators.required, "Telefono"),
       ValidadorInput(Validators.pattern(/^\+?[1-9]{3} \d{1,14}$/)) // formato E.164
+    ]),
+    numDocument: this.fb.control<string | null>("", [
+      ValidadorInput(Validators.required, "Número de Documento"),
+      ValidadorInput(Validators.pattern(/\d/ ), "Número de Documento", "Solo se permiten Números") ,
+      ValidadorInput(Validators.minLength(3), "Número de Documento"),
+      ValidadorInput(Validators.maxLength(14), "Número de Documento"),
     ]),
     birthDate: this.fb.control<string | null>("", [
       ValidadorInput(Validators.required, "Fecha de nacimiento")
