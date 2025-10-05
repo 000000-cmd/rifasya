@@ -21,6 +21,9 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
               case 'email':
                 helperText= `Correo invalido`;
                 break;
+              case 'emailOrUsername':
+                helperText = `El formato de correo o usuario no es válido`;
+                break;
               case 'pattern':
                 const pattern = result['pattern'] as { requiredPattern: string; actualValue: string };
                 helperText= `Debe cumplir con el siguiente patron: ${pattern.requiredPattern} `;

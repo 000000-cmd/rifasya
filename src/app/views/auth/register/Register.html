@@ -106,12 +106,25 @@
                     </div>
 
                     <div class="grid md:grid-cols-2 gap-6">
-                        <doc-select [control]="form.controls['docType']"></doc-select>
+                      <base-select formControlName="docType" label="Tipo de documento" [icon]="Card" placeholder="Selecciona un documento">
+                        @for (doc of documentTypes; track doc.code) {
+                          <base-select-item [value]="doc.code">{{ doc.name }}</base-select-item>
+                        }
+                      </base-select>
 
                         <base-input formControlName="numDocument" placeholder="000000000"
                         label="Ingresar número de documento" [iconLabel]="Card"></base-input>
 
                     </div>
+                  <div class="grid md:grid-cols-2 gap-6">
+
+                    <!-- CORRECCIÓN: Select de Género adaptado a la interfaz ListItem -->
+                    <base-select formControlName="gender" label="Género" [icon]="GenderIcon" placeholder="Selecciona tu género">
+                      @for (gender of genders; track gender.code) {
+                        <base-select-item [value]="gender.code">{{ gender.name }}</base-select-item>
+                      }
+                    </base-select>
+                  </div>
 
                     <!-- Caja con gradiente -->
                     <div

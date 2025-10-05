@@ -1,10 +1,10 @@
 import { Component, Input } from "@angular/core";
-import { BaseSelectComponent } from "../../ui/selects/base-select.component"; 
-import { BaseSelectItemComponent } from "../../ui/selects/base-select-item.component"; 
+import { BaseSelectComponent } from "../../ui/selects/BaseSelectComponent.component";
+import { BaseSelectItemComponent } from "../../ui/selects/BaseSelectItem.component";
 import { CommonModule } from "@angular/common";
 import { ReactiveFormsModule, FormControl } from "@angular/forms";
 import { IdCardIcon } from "lucide-angular";
-import { DocumentType } from "../../../core/models/TypeDocument.model";
+import { ListItem } from "../../../core/models/TypeItem.model";
 
 
 @Component({
@@ -12,7 +12,7 @@ import { DocumentType } from "../../../core/models/TypeDocument.model";
   standalone: true,
   imports: [BaseSelectComponent, BaseSelectItemComponent, CommonModule, ReactiveFormsModule],
   template: `
-    <base-select 
+    <base-select
       [formControl]="control"
       label="Selecciona un tipo de documento"
       placeholder="Selecciona uno..."
@@ -36,7 +36,7 @@ export  class SelectDocumentTypeComponent {
   constructor() {
     this.loadDocuments();
   }
-  
+
   async loadDocuments() {
 
      // const documents = await getTypeDocuments();
