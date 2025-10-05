@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import {RouterLink, RouterOutlet} from '@angular/router';
 import { LogoComponent } from '../shared/ui/logo.component';
+import { ButtonComponent } from '../shared/ui/buttons/button/button.component';
 
 
 @Component({
   selector: 'app-default-layout',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, LogoComponent],
+  imports: [RouterOutlet, RouterLink, LogoComponent,ButtonComponent],
   template: `
   <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b shadow-sm">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -117,9 +118,9 @@ import { LogoComponent } from '../shared/ui/logo.component';
             <p class="text-gray-400 mb-4">Suscríbete y recibe notificaciones de nuevas rifas y ofertas especiales.</p>
             <div class="space-y-3">
               <input type="email" placeholder="Tu email" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-purple-500 transition-colors">
-              <button class="w-full bg-[var(--primary-color)] hover:from-purple-700 hover:to-pink-700 py-2 rounded-lg font-semibold transition-colors">
+              <app-button variant="heroPrimary" size="full" emphasis="semibold">
                 Suscribirse
-              </button>
+              </app-button>
             </div>
           </div>
         </div>

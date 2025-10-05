@@ -23,10 +23,13 @@ export class ButtonComponent {
     | 'fancy'
     | 'heroPrimary'
     | 'heroSecondary'
+    | 'heroPrimaryInverted'
+    | 'heroSecondaryInverted'
+    | 'neutral'
     | 'soft' = 'default';
 
   /** Tamaño del botón */
-  @Input() size: 'default' | 'sm' | 'lg' | 'icon' = 'default';
+  @Input() size: 'default' | 'sm' | 'lg' | 'auto' | 'full' | 'icon' = 'default';
 
   /** Clases personalizadas adicionales */
   @Input() class: string = '';
@@ -34,10 +37,15 @@ export class ButtonComponent {
   /** Tipo de botón */
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
 
+  @Input() textSize: 'sm' | 'base' | 'lg' | 'xl' = 'base';
+  @Input() textWeight: 'light' | 'normal' | 'medium' | 'semibold' | 'bold' = 'normal';
+
+
+
   /** Genera las clases Tailwind según la variante */
   get buttonClasses(): string {
     const base =
-      '';
+      'h-full';
 
     const variants: Record<string, string> = {
       default: 'bg-primary text-primary-foreground hover:bg-primary/90',
@@ -57,12 +65,22 @@ export class ButtonComponent {
 
       /** ✨ Hero principal */
       heroPrimary:
-        'bg-primary hover:bg-[var(--primary-hover)] text-white text-lg px-8 py-3 rounded-lg font-semibold transition-colors',
+        'bg-primary hover:bg-[var(--primary-hover)] text-white text-base px-8 py-3 rounded-lg font-semibold transition-colors',
+
+      heroPrimaryInverted: 
+        'bg-white text-purple-600 px-8 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-colors',
 
       /** 💠 Hero secundario */
       heroSecondary:
-        'border-2 border-purple-200 text-purple-600 hover:bg-purple-50 text-lg font-semibold px-8 py-3 rounded-lg shadow-sm transition-all',
-          
+        'border-2 border-purple-200 text-purple-600 hover:bg-purple-50 text-lg font-semibold px-8 py-3 rounded-lg  transition-all',
+      
+      heroSecondaryInverted: 
+        'border-2 border-white text-white px-8 py-3 rounded-xl font-semibold hover:bg-white hover:text-purple-600 transition-colors',
+
+      
+      /** ⚪ Variante neutra tipo "Ver Todas las Rifas" */
+      neutral:
+      'border-2 border-gray-300 text-gray-700 hover:bg-gray-50  font-semibold px-8 py-3 rounded-lg transition-colors',
     };
 
     const sizes: Record<string, string> = {
@@ -70,8 +88,24 @@ export class ButtonComponent {
       sm: 'h-8 px-3 text-xs',
       lg: 'h-10 px-6 text-base ',
       icon: 'p-2',
+      auto: 'h-auto',
+      full: 'w-full'
+    };
+    const textSizes = {
+      sm: 'text-sm',
+      base: 'text-base',
+      lg: 'text-lg',
+      xl: 'text-xl'
     };
 
-    return `${base} ${variants[this.variant]} ${sizes[this.size]} ${this.class}`;
+    const textWeights = {
+      light: 'font-light',
+      normal: 'font-normal',
+      medium: 'font-medium',
+      semibold: 'font-semibold',
+      bold: 'font-bold'
+    };
+
+    return `${base} ${variants[this.variant]} ${sizes[this.size]} ${textSizes[this.textSize]} ${textWeights[this.textWeight]} ${this.class}`;
   }
 }

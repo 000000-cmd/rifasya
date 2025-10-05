@@ -37,13 +37,13 @@
           </p>
 
           <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12">
-          <app-button variant="default" class="bg-primary hover:bg-[var(--primary-hover)] text-white text-lg px-8 py-3 rounded-lg font-semibold transition-colors">
+          <app-button variant="heroPrimary" size="full" >
             Ver Rifas Activas
           </app-button>
-            <button
-              class="border-2 border-purple-200 text-purple-600 hover:bg-purple-50 text-lg px-8 py-3 rounded-lg font-semibold transition-colors">
-              Cómo Funciona
-            </button>
+          <app-button variant="heroSecondary" size="full" >
+            Cómo Funciona
+          </app-button>
+            
           </div>
 
           <!-- Stats -->
@@ -205,20 +205,18 @@
                 <span class="text-2xl font-bold text-purple-600">\${{ raffle.ticketPrice }}</span>
                 <span class="text-sm text-gray-600 ml-1">por boleto</span>
               </div>
-              <app-primary-button
-                type="type2"
-                text="Comprar Boletos">
-              </app-primary-button>
+              <app-button variant="heroPrimary" size="full" >
+                Comprar Boletos
+              </app-button>
             </div>
           </div>
         </div>
       </div>
 
       <div class="text-center mt-12">
-        <button
-          class="border-2 border-gray-300 text-gray-700 hover:bg-gray-50 px-8 py-3 rounded-lg font-semibold transition-colors">
+        <app-button variant="neutral" size="auto">
           Ver Todas las Rifas
-        </button>
+        </app-button>
       </div>
     </div>
   </section>
@@ -275,12 +273,12 @@
               ¡Tu suerte está a un clic de distancia!
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-              <button class="bg-white text-purple-600 px-8 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-colors">
+              <app-button variant="heroPrimaryInverted" size="full" >
                 Crear Cuenta Gratis
-              </button>
-              <button class="border-2 border-white text-white px-8 py-3 rounded-xl font-semibold hover:bg-white hover:text-purple-600 transition-colors">
+              </app-button>
+              <app-button variant="heroSecondaryInverted" size="full" >
                 Ver Rifas Activas
-              </button>
+              </app-button>
             </div>
           </div>
         </div>
