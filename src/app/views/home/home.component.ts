@@ -2,6 +2,7 @@ import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { PrimaryButton, SecondaryButton } from "../../shared/ui/buttons/buttons.component";  
+import { ButtonComponent } from "../../shared/ui/buttons/button/button.component";
 
 interface Raffle {
   id: number;
@@ -27,7 +28,7 @@ interface Feature {
 @Component({
   selector: 'app-home',                // nombre de la etiqueta
   standalone: true,                    // ← standalone obligatorio
-  imports: [RouterOutlet, CommonModule, PrimaryButton],             // Componentes importados que usaras en la vista
+  imports: [RouterOutlet, CommonModule, PrimaryButton, ButtonComponent],             // Componentes importados que usaras en la vista
   templateUrl: './home.html', // HTML de esta vista      // estilos locales
 })
 

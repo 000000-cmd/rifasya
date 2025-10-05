@@ -7,7 +7,6 @@ import { NgClass } from '@angular/common';
     <button [ngClass]="class">{{ text }}</button>
   `,
   imports: [NgClass],
-  styleUrls: ['./primaryButton.scss']
 })
 export class PrimaryButton {
   @Input() text = '';
@@ -20,7 +19,6 @@ export class PrimaryButton {
     <button [ngClass]="class">{{ text }}</button>
   `,
   imports: [NgClass],
-  styleUrls: ['./secondaryButton.scss']
 })
 export class SecondaryButton {
   @Input() text = '';

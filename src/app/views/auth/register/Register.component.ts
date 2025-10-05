@@ -13,24 +13,9 @@ import { ValidadorInput } from "../../../shared/utils/validarInput";
 import { BaseSelectComponent } from "../../../shared/ui/selects/base-select.component";
 import { BaseSelectItemComponent } from "../../../shared/ui/selects/base-select-item.component";
 import { SelectDocumentTypeComponent } from "../../../shared/features/select/tipoDoc.component";
+import { passwordMatchValidator } from "../../../shared/utils/validatePassword";
 
 
-// 🔹 Validador custom para confirmar contraseña
-function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
-  const password = control.get('password')?.value;
-  const confirmPassword = control.get('confirmPassword')?.value;
-
-  const mismatch = password && confirmPassword && password !== confirmPassword;
-  if (mismatch) {
-    control.get('confirmPassword')?.setErrors({ passwordMismatch: true });
-    return { passwordMismatch: true };
-  } else {
-    if (control.get('confirmPassword')?.hasError('passwordMismatch')) {
-      control.get('confirmPassword')?.updateValueAndValidity({ onlySelf: true, emitEvent: false });
-    }
-    return null;
-  }
-}
 
 @Component({
   selector: 'register',                // nombre de la etiqueta
