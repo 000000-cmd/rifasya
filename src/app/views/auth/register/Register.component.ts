@@ -1,34 +1,37 @@
 import { CommonModule } from "@angular/common";
-import {Component, inject, Optional, Self} from "@angular/core";
+// 1. Importamos 'effect' de Angular core
+import {Component, inject, OnInit, effect} from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { LogoComponent } from "../../../shared/ui/logo.component";
-import { LucideAngularModule, Shield, Zap, Star, Gift, Sparkles, Crown, User, Mail, Phone, Calendar, MapPin, Lock, IdCard, IdCardIcon, Transgender } from 'lucide-angular';
+import { LucideAngularModule, Shield, Zap, Star, Gift, Sparkles, Crown, User, Mail, Phone, Calendar, MapPin, Lock, IdCardIcon, Users, LoaderCircle } from 'lucide-angular';
 import { InputComponent } from "../../../shared/ui/input/Input.component";
 import { BadgeComponent } from "../../../shared/ui/badge.component";
 import { CardComponent } from "../../../shared/ui/card/card.component";
 import { CardHeaderComponent } from "../../../shared/ui/card/card-header.component";
 import { CardContentComponent } from "../../../shared/ui/card/card-content.component";
-import { FormBuilder, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, ValidatorFn  } from '@angular/forms';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ValidadorInput } from "../../../shared/utils/validarInput";
-import { BaseSelectItemComponent } from "../../../shared/ui/selects/BaseSelectItem.component";
 import { passwordMatchValidator } from "../../../shared/utils/validatePassword";
-import {ListItem} from '../../../core/models/TypeItem.model';
+import {ListsItemsService} from '../../../core/services/listsItemsService.service';
 import {BaseSelectComponent} from '../../../shared/ui/selects/BaseSelectComponent.component';
-
-
+import {CheckboxComponent} from '../../../shared/ui/checkbox/CheckBox.component';
 
 @Component({
   selector: 'register',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, LogoComponent,
+  imports: [
+    RouterOutlet, CommonModule, LogoComponent,
     LucideAngularModule, InputComponent, BadgeComponent,
     CardComponent, CardHeaderComponent, CardContentComponent,
-    ReactiveFormsModule, BaseSelectComponent, BaseSelectItemComponent],             // Componentes importados que usaras en la vista
-  templateUrl: './Register.html', // HTML de esta vista
-  styleUrl: './Register.scss'      // estilos locales
+    ReactiveFormsModule,
+    BaseSelectComponent,
+    CheckboxComponent
+  ],
+  templateUrl: './Register.html',
+  styleUrl: './Register.scss'
 })
-
-export class Register {
+export class Register implements OnInit {
+  // --- Iconos ---
   readonly Shield = Shield;
   readonly Zap = Zap;
   readonly Star = Star;
@@ -42,78 +45,53 @@ export class Register {
   readonly MapPin = MapPin;
   readonly Lock = Lock;
   readonly Card = IdCardIcon;
-  readonly GenderIcon = Transgender;
+  readonly GenderIcon = Users;
+  readonly Loader = LoaderCircle;
 
+  private listService = inject(ListsItemsService);
   private fb = inject(FormBuilder);
 
-  documentTypes: ListItem[] = [
-    { code: 'NULL', name: 'Seleccionar...', order: 1 },
-    { code: 'CC', name: 'Cédula de Ciudadanía', order: 2 },
-    { code: 'CE', name: 'Cédula de Extranjería', order: 3 },
-    { code: 'TI', name: 'Tarjeta de Identidad', order: 4 },
-    { code: 'PAS', name: 'Pasaporte', order: 5 }
-  ];
-
-  genders: ListItem[] = [
-    { code: 'NULL', name: 'Seleccionar...', order: 1 },
-    { code: 'M', name: 'Masculino', order: 2 },
-    { code: 'F', name: 'Femenino', order: 3 },
-    { code: 'O', name: 'Otro', order: 4 }
-  ];
-
+  readonly documentTypes = this.listService.documentTypes;
+  readonly genders = this.listService.genders;
+  readonly isLoading = this.listService.isLoading;
 
   form = this.fb.group({
-    firstName: this.fb.control<string | null>("", [
-      ValidadorInput(Validators.required, "Nombre"),
-      ValidadorInput(Validators.minLength(2))
-    ]),
-    lastName: this.fb.control<string | null>("", [
-      ValidadorInput(Validators.required, "Segundo nombre"),
-      ValidadorInput(Validators.minLength(2))
-    ]),
-    email: this.fb.control<string | null>("", [
-      ValidadorInput(Validators.required, "Correo"),
-      ValidadorInput(Validators.email)
-    ]),
-    phone: this.fb.control<string | null>("", [
-      ValidadorInput(Validators.required, "Telefono"),
-      ValidadorInput(Validators.pattern(/^\+?[1-9]{3} \d{1,14}$/)) // formato E.164
-    ]),
-    numDocument: this.fb.control<string | null>("", [
-      ValidadorInput(Validators.required, "Número de Documento"),
-      ValidadorInput(Validators.pattern(/\d/ ), "Número de Documento", "Solo se permiten Números") ,
-      ValidadorInput(Validators.minLength(3), "Número de Documento"),
-      ValidadorInput(Validators.maxLength(14), "Número de Documento"),
-    ]),
-    birthDate: this.fb.control<string | null>("", [
-      ValidadorInput(Validators.required, "Fecha de nacimiento")
-    ]),
-    city: this.fb.control<string | null>("", [
-      ValidadorInput(Validators.required, "Ciudad"),
-      ValidadorInput(Validators.minLength(2))
-    ]),
-    gender: this.fb.control<string | null>(null, [
-      ValidadorInput(Validators.required, "Género")
-    ]),
-    docType : this.fb.control<string | null>(null, [
-      ValidadorInput(Validators.required, "Tipo de documento")
-    ]),
-    password: this.fb.control<string | null>("", [
-      ValidadorInput(Validators.required, "Contraseña"),
-      ValidadorInput(Validators.minLength(8))
-    ]),
-    confirmPassword: this.fb.control<string | null>("", [
-      ValidadorInput(Validators.required, "Contraseña")
-    ]),
-    acceptTerms: this.fb.control<boolean>(false, [
-      ValidadorInput(Validators.requiredTrue, "Terminos y Condiciones")
-    ]),
+    firstName: this.fb.control<string | null>("", [ValidadorInput(Validators.required, "Nombre"), ValidadorInput(Validators.minLength(2))]),
+    lastName: this.fb.control<string | null>("", [ValidadorInput(Validators.required, "Apellido"), ValidadorInput(Validators.minLength(2))]),
+    email: this.fb.control<string | null>("", [ValidadorInput(Validators.required, "Correo"), ValidadorInput(Validators.email)]),
+    phone: this.fb.control<string | null>("", [ValidadorInput(Validators.required, "Teléfono")]),
+    birthDate: this.fb.control<string | null>("", [ValidadorInput(Validators.required, "Fecha de nacimiento")]),
+    city: this.fb.control<string | null>("", [ValidadorInput(Validators.required, "Ciudad"), ValidadorInput(Validators.minLength(2))]),
+    gender: this.fb.control<string | null>(null, [ValidadorInput(Validators.required, "Género")]),
+    docType : this.fb.control<string | null>(null, [ValidadorInput(Validators.required, "Tipo de documento")]),
+    numDocument: this.fb.control<string | null>("", [ValidadorInput(Validators.required, "Número de Documento"), ValidadorInput(Validators.minLength(3)), ValidadorInput(Validators.maxLength(14))]),
+    password: this.fb.control<string | null>("", [ValidadorInput(Validators.required, "Contraseña"), ValidadorInput(Validators.minLength(8))]),
+    confirmPassword: this.fb.control<string | null>("", [ValidadorInput(Validators.required, "Contraseña")]),
+    acceptTerms: this.fb.control<boolean>(false, [ValidadorInput(Validators.requiredTrue, "Términos y Condiciones")]),
     acceptMarketing: this.fb.control<boolean>(false),
-
   }, { validators: passwordMatchValidator });
 
-  get f() {
-    return this.form.controls;
+  constructor() {
+    // Un 'effect' reacciona a los cambios en los signals que lee.
+    effect(() => {
+      const loading = this.isLoading(); // Leemos el signal
+      const docTypeControl = this.form.get('docType');
+      const genderControl = this.form.get('gender');
+
+      // Deshabilitamos o habilitamos los controles desde el código.
+      if (loading) {
+        docTypeControl?.disable();
+        genderControl?.disable();
+      } else {
+        docTypeControl?.enable();
+        genderControl?.enable();
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    this.listService.loadDocumentTypes();
+    this.listService.loadGenders();
   }
 
   onSubmit() {
@@ -121,7 +99,7 @@ export class Register {
       console.log('✅ Datos del formulario:', this.form.value);
       alert("¡Registro exitoso! (Esto es una demo)");
     } else {
-      console.warn("⚠️ Errores en el formulario:", this.form.errors, this.form.value);
+      console.warn("⚠️ Errores en el formulario:", this.form.errors);
       this.form.markAllAsTouched();
     }
   }

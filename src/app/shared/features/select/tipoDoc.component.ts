@@ -1,16 +1,15 @@
 import { Component, Input } from "@angular/core";
 import { BaseSelectComponent } from "../../ui/selects/BaseSelectComponent.component";
-import { BaseSelectItemComponent } from "../../ui/selects/BaseSelectItem.component";
 import { CommonModule } from "@angular/common";
 import { ReactiveFormsModule, FormControl } from "@angular/forms";
 import { IdCardIcon } from "lucide-angular";
-import { ListItem } from "../../../core/models/TypeItem.model";
+import { ListItem } from "../../../core/models/TypeListItem.model";
 
 
 @Component({
   selector: 'doc-select',
   standalone: true,
-  imports: [BaseSelectComponent, BaseSelectItemComponent, CommonModule, ReactiveFormsModule],
+  imports: [BaseSelectComponent, CommonModule, ReactiveFormsModule],
   template: `
     <base-select
       [formControl]="control"
@@ -19,9 +18,7 @@ import { ListItem } from "../../../core/models/TypeItem.model";
       [icon]="Card">
 
       @for (opcion of listaOpciones; track opcion.value) {
-        <base-select-item [value]="opcion.value">
-          {{ opcion.label }}
-        </base-select-item>
+
       }
     </base-select>
   `

@@ -3,7 +3,6 @@ import { Component, inject, OnInit, OnDestroy } from "@angular/core";
 import { KeyRound, User, Mail, LucideIconData } from "lucide-angular";
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
 import { InputComponent } from "../../../shared/ui/input/Input.component";
 import { ButtonComponent } from "../../../shared/ui/buttons/button/button.component";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
