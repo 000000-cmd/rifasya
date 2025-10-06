@@ -1,14 +1,14 @@
-@keyframes slide-in-right {
+@keyframes slide-in-down-toast {
   from {
-    transform: translateX(100%);
+    transform: translateY(-20px);
     opacity: 0;
   }
   to {
-    transform: translateX(0);
+    transform: translateY(0);
     opacity: 1;
   }
 }
 
-.animate-slide-in-right {
-  animation: slide-in-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+.animate-slide-in-down-toast {
+  animation: slide-in-down-toast 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }

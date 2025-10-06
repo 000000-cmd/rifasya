@@ -1,60 +1,50 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Bell, ChartColumn, CircleQuestionMark, DollarSign, LayoutDashboard, LucideIconData, Megaphone, Ticket, TrendingUp, Trophy, User, LucideAngularModule } from 'lucide-angular';
 
 export interface MenuItem {
   id: string;
   label: string;
-  icon: LucideIconData;
+  icon: any;
+  link: string; // La ruta a la que navegará
   badge?: number;
 }
 
 @Component({
   selector: 'app-admin-sidebar',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule],
+  imports: [CommonModule, LucideAngularModule, RouterLink, RouterLinkActive],
   templateUrl: "./AdminSidebar.html"
 })
 export class AdminSidebarComponent {
-  /** Sección activa del panel */
-  @Input() activeSection: string = 'dashboard';
-
-  /** Estado del menú móvil */
+  // Recibe el estado del menú móvil desde el layout padre
   @Input() isMobileMenuOpen: boolean = false;
-
-  /** Emite el id de la sección seleccionada */
-  @Output() sectionChange = new EventEmitter<string>();
-
-  /** Emite evento para abrir/cerrar menú móvil */
+  // Emite un evento para notificar al layout padre que debe cambiar el estado
   @Output() mobileMenuToggle = new EventEmitter<void>();
 
-  /** Lista de elementos del menú */
-  menuItems: MenuItem[] = [
-    { id: 'dashboard',  label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'raffles',    label: 'Rias', icon: Ticket, badge: 5 },
-    { id: 'users',      label: 'Usuarios & Terceros', icon: User },
-    { id: 'afiliates',  label: 'Afiliados', icon: TrendingUp },
-    { id: 'transactions', label: 'Transacciones', icon: DollarSign, badge: 12 },
-    { id: 'winners',    label: 'Ganadores', icon:  Trophy },
-    { id: 'marketing',  label: 'Marketing', icon: Megaphone },
-    { id: 'reports',    label: 'Reporte', icon: ChartColumn },
-    { id: 'notify',     label: 'Notificaciones', icon: Bell },
-    { id: 'help',       label: 'Ayuda', icon: CircleQuestionMark },
-    { id: 'config',     label: 'Configuración', icon: CircleQuestionMark },
+  public menuItems: MenuItem[] = [
+    { id: 'dashboard',    label: 'Dashboard',         icon: LayoutDashboard,    link: '/dashboard/admin' },
+    { id: 'raffles',      label: 'Rifas',             icon: Ticket,             link: '/dashboard/admin/raffles', badge: 5 },
+    { id: 'users',        label: 'Usuarios',          icon: User,               link: '/dashboard/admin/users' },
+    { id: 'afiliates',    label: 'Afiliados',         icon: TrendingUp,         link: '/dashboard/admin/afiliates' },
+    { id: 'transactions', label: 'Transacciones',     icon: DollarSign,         link: '/dashboard/admin/transactions', badge: 12 },
+    { id: 'winners',      label: 'Ganadores',         icon: Trophy,             link: '/dashboard/admin/winners' },
+    { id: 'marketing',    label: 'Marketing',         icon: Megaphone,          link: '/dashboard/admin/marketing' },
+    { id: 'reports',      label: 'Reportes',          icon: ChartColumn,        link: '/dashboard/admin/reports' },
+    { id: 'notify',       label: 'Notificaciones',    icon: Bell,               link: '/dashboard/admin/notify' },
+    { id: 'help',         label: 'Ayuda',             icon: CircleQuestionMark, link: '/dashboard/admin/help' },
   ];
 
-  /** Cambia la sección activa */
-  selectSection(section: string): void {
-    this.sectionChange.emit(section);
-    if (this.isMobileMenuOpen) {
-      this.mobileMenuToggle.emit();
-    }
-  }
-
-  /** Cambia visibilidad del menú móvil */
+  // Este método se llama desde el HTML para emitir el evento
   toggleMobileMenu(): void {
     this.mobileMenuToggle.emit();
   }
 
-
+  // Cierra el menú móvil si está abierto al hacer clic en un enlace
+  handleLinkClick(): void {
+    if (this.isMobileMenuOpen) {
+      this.toggleMobileMenu();
+    }
+  }
 }

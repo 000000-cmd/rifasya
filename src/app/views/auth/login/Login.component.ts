@@ -70,7 +70,7 @@ export class Login implements OnInit, OnDestroy {
     }
     try {
       await this.authService.login(this.form.value);
-      await this.router.navigate(['/dashboard/redir']);
+      await this.router.navigate(['/dashboard']);
     } catch (error) {
       this.alertService.error("Error de Autenticación", "El correo/usuario o la contraseña son incorrectos.");
     }
