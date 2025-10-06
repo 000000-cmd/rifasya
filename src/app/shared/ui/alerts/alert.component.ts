@@ -18,21 +18,33 @@ export class CustomAlertComponent {
     this.close.emit();
   }
 
-  get alertClasses(): object {
-    return {
-      'bg-green-100 border-green-500 text-green-800': this.alert.type === 'success',
-      'bg-red-100 border-red-500 text-red-800': this.alert.type === 'error',
-      'bg-yellow-100 border-yellow-500 text-yellow-800': this.alert.type === 'warning',
-      'bg-blue-100 border-blue-500 text-blue-800': this.alert.type === 'info',
+  // Mapeo de clases de estilo más limpio y moderno
+  get alertClasses(): { [key: string]: string } {
+    const baseClasses = {
+      iconContainer: 'bg-gray-100',
+      icon: 'text-gray-500',
+      button: 'bg-gray-600',
+      buttonFocus: 'focus:ring-gray-500'
     };
-  }
 
-  get iconClasses(): object {
-    return {
-      'text-green-500': this.alert.type === 'success',
-      'text-red-500': this.alert.type === 'error',
-      'text-yellow-500': this.alert.type === 'warning',
-      'text-blue-500': this.alert.type === 'info',
+    switch (this.alert.type) {
+      case 'success':
+        return {
+          iconContainer: 'bg-green-100',
+          icon: 'text-green-600',
+          button: 'bg-green-600',
+          buttonFocus: 'focus:ring-green-500'
+        };
+      case 'error':
+        return {
+          iconContainer: 'bg-red-100',
+          icon: 'text-red-600',
+          button: 'bg-red-600',
+          buttonFocus: 'focus:ring-red-500'
+        };
+      // Puedes añadir 'warning' e 'info' si los necesitas
+      default:
+        return baseClasses;
     }
   }
 }

@@ -134,4 +134,4 @@ import { ButtonComponent } from '../shared/ui/buttons/button/button.component';
     </footer>
   `
 })
-export class DefaultLayoutComponent {}
+export class PublicLayoutComponent {}

@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 // 1. Importamos 'effect' de Angular core
 import {Component, inject, OnInit, effect} from "@angular/core";
-import {Router, RouterOutlet} from "@angular/router";
+import {Router, RouterLink, RouterOutlet} from "@angular/router";
 import { LogoComponent } from "../../../shared/ui/logo.component";
 import { LucideAngularModule, Shield, Zap, Star, Gift, Sparkles, Crown, User, Mail, Phone, Calendar, MapPin, Lock, IdCardIcon, Users, LoaderCircle } from 'lucide-angular';
 import { InputComponent } from "../../../shared/ui/input/Input.component";
@@ -27,7 +27,7 @@ import {AlertService} from '../../../core/services/alert.service';
     CardComponent, CardHeaderComponent, CardContentComponent,
     ReactiveFormsModule,
     BaseSelectComponent,
-    CheckboxComponent
+    CheckboxComponent, RouterLink
   ],
   templateUrl: './Register.html',
   styleUrl: './Register.scss'
@@ -65,7 +65,6 @@ export class Register implements OnInit {
     lastName: this.fb.control<string | null>("", [ValidadorInput(Validators.required, "Apellido"), ValidadorInput(Validators.minLength(2))]),
     email: this.fb.control<string | null>("", [ValidadorInput(Validators.required, "Correo"), ValidadorInput(Validators.email)]),
     phone: this.fb.control<string | null>("", [ValidadorInput(Validators.required, "Teléfono")]),
-    birthDate: this.fb.control<string | null>("", [ValidadorInput(Validators.required, "Fecha de nacimiento")]),
     city: this.fb.control<string | null>("", [ValidadorInput(Validators.required, "Ciudad"), ValidadorInput(Validators.minLength(2))]),
     gender: this.fb.control<string | null>(null, [ValidadorInput(Validators.required, "Género")]),
     docType : this.fb.control<string | null>(null, [ValidadorInput(Validators.required, "Tipo de documento")]),
@@ -123,8 +122,8 @@ export class Register implements OnInit {
 
     try {
       await this.authService.register(registerPayload);
-      this.alertService.success('¡Registro Exitoso!', 'Ya puedes iniciar sesión con tus credenciales.');
-      this.router.navigate(['/login']);
+      this.alertService.toastSuccess('¡Registro Exitoso!, Ya puedes iniciar sesión con tus credenciales.');
+      await this.router.navigate(['/login']);
     } catch (error) {
       this.alertService.error('Error en el Registro', `${error}`);
     }

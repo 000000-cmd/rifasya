@@ -18,12 +18,14 @@ export class AlertToastComponent {
     this.close.emit();
   }
 
-  get alertClasses(): object {
-    return {
-      'bg-green-600': this.alert.type === 'success',
-      'bg-red-600': this.alert.type === 'error',
-      'bg-yellow-500': this.alert.type === 'warning',
-      'bg-blue-600': this.alert.type === 'info',
-    };
+  get alertClasses(): { [key: string]: string } {
+    switch (this.alert.type) {
+      case 'success':
+        return { icon: 'text-green-500' };
+      case 'error':
+        return { icon: 'text-red-500' };
+      default:
+        return { icon: 'text-gray-500' };
+    }
   }
 }

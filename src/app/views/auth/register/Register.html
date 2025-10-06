@@ -58,20 +58,6 @@
             <base-input formControlName="lastName" placeholder="Tu apellido" [iconLabel]="User" label="Apellido"></base-input>
           </div>
           <div class="grid md:grid-cols-2 gap-6">
-            <base-input formControlName="email" placeholder="Tu correo electronico" [iconLabel]="Mail" label="Correo electronico"></base-input>
-            <base-input mask="000 0000000" formControlName="phone" placeholder="Tu teléfono" [iconLabel]="Phone" label="Teléfono"></base-input>
-          </div>
-          <div class="grid md:grid-cols-2 gap-6">
-            <base-input type="date" formControlName="birthDate" placeholder="Fecha de Nacimiento" [iconLabel]="Calendar" label="Fecha de Nacimiento"></base-input>
-            <base-select
-              formControlName="gender"
-              label="Género"
-              [icon]="GenderIcon"
-              [placeholder]="isLoading() ? 'Cargando...' : 'Selecciona tu género'"
-              [options]="genders()">
-            </base-select>
-          </div>
-          <div class="grid md:grid-cols-2 gap-6">
             <base-select
               formControlName="docType"
               label="Tipo de documento"
@@ -79,10 +65,21 @@
               [placeholder]="isLoading() ? 'Cargando...' : 'Selecciona un documento'"
               [options]="documentTypes()">
             </base-select>
-            <base-input formControlName="numDocument" placeholder="000000000" label="Ingresar número de documento" [iconLabel]="Card"></base-input>
+            <base-input formControlName="numDocument" placeholder="000000000" label="Número de documento" [iconLabel]="Card"></base-input>
           </div>
-          <div class="grid md:grid-cols-1 gap-6">
+          <div class="grid md:grid-cols-2 gap-6">
+            <base-input formControlName="email" placeholder="Tu correo electronico" [iconLabel]="Mail" label="Correo electronico"></base-input>
+            <base-input mask="000 0000000" formControlName="phone" placeholder="Tu teléfono" [iconLabel]="Phone" label="Teléfono"></base-input>
+          </div>
+          <div class="grid md:grid-cols-2 gap-6">
             <base-input formControlName="city" placeholder="Ciudad" [iconLabel]="MapPin" label="Ciudad"></base-input>
+            <base-select
+              formControlName="gender"
+              label="Género"
+              [icon]="GenderIcon"
+              [placeholder]="isLoading() ? 'Cargando...' : 'Selecciona tu género'"
+              [options]="genders()">
+            </base-select>
           </div>
           <div class="grid md:grid-cols-2 gap-6">
             <base-input type="password" formControlName="password" placeholder="Contraseña" [iconLabel]="Lock" label="Tu contraseña segura"></base-input>
@@ -111,7 +108,7 @@
           <div class="text-center">
             <p class="text-gray-600">
               ¿Ya tienes cuenta?
-              <a href="#" class="text-purple-600 font-bold hover:text-purple-700 transition-colors">Inicia Sesión</a>
+              <a routerLink="/login" class="text-purple-600 font-bold hover:text-purple-700 transition-colors">Inicia Sesión</a>
             </p>
           </div>
         </form>
