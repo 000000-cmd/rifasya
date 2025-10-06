@@ -8,6 +8,9 @@ import { ButtonComponent } from "../../../shared/ui/buttons/button/button.compon
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ValidadorInput } from "../../../shared/utils/validarInput";
 import { emailOrUsernameValidator } from '../../../shared/utils/emailOrUsernameValidator';
+import {AuthService} from '../../../core/services/auth.service';
+import {Router} from '@angular/router';
+import {AlertService} from '../../../core/services/alert.service';
 
 
 @Component({
@@ -23,13 +26,13 @@ export class Login implements OnInit, OnDestroy {
   readonly Key = KeyRound;
   readonly Mail = Mail; // 2. Hacemos el ícono de Mail accesible en la clase
 
-  // 3. Variable que guardará el ícono a mostrar (inicia con el de usuario)
   emailOrUsernameIcon: LucideIconData = User;
-
-  // 4. Subject para manejar la desuscripción y evitar fugas de memoria
   private unsubscribe$ = new Subject<void>();
 
   private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private alertService = inject(AlertService);
 
   form = this.fb.group({
     email: this.fb.control<String | null>("",[
@@ -43,21 +46,14 @@ export class Login implements OnInit, OnDestroy {
   });
 
   ngOnInit(): void {
-    // 5. Escuchamos los cambios en el campo 'email'
     this.form.controls.email.valueChanges
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(value => {
-        // Si el texto incluye un '@', es probable que sea un correo
-        if (value && value.includes('@')) {
-          this.emailOrUsernameIcon = Mail;
-        } else {
-          this.emailOrUsernameIcon = User;
-        }
+        this.emailOrUsernameIcon = (value && value.includes('@')) ? Mail : User;
       });
   }
 
   ngOnDestroy(): void {
-    // 6. Limpiamos la subscripción cuando el componente se destruye
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
@@ -66,13 +62,17 @@ export class Login implements OnInit, OnDestroy {
     return this.form.controls;
   }
 
-  onSubmit() {
-    if (this.form.valid) {
-      console.log('✅ Datos del formulario:', this.form.value);
-      alert("¡Inicio de sesión exitoso! (Esto es una demo)");
-    } else {
-      console.warn("⚠️ Errores en el formulario:", this.form.errors);
+  async onSubmit() {
+    if (this.form.invalid) {
       this.form.markAllAsTouched();
+      this.alertService.toastError("Ambos campos son requeridos.");
+      return;
+    }
+    try {
+      await this.authService.login(this.form.value);
+      await this.router.navigate(['/dashboard/redir']);
+    } catch (error) {
+      this.alertService.error("Error de Autenticación", "El correo/usuario o la contraseña son incorrectos.");
     }
   }
 }

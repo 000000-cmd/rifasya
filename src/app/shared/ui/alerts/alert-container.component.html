@@ -1,0 +1,10 @@
+@if (alert$ | async; as alert) {
+
+  @if (alert.display === 'modal') {
+    <app-custom-alert [alert]="alert" (close)="onClose()"></app-custom-alert>
+  }
+
+  @if (alert.display === 'toast') {
+    <app-alert-toast [alert]="alert" (close)="onClose()"></app-alert-toast>
+  }
+}

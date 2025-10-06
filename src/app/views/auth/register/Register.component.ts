@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 // 1. Importamos 'effect' de Angular core
 import {Component, inject, OnInit, effect} from "@angular/core";
-import { RouterOutlet } from "@angular/router";
+import {Router, RouterOutlet} from "@angular/router";
 import { LogoComponent } from "../../../shared/ui/logo.component";
 import { LucideAngularModule, Shield, Zap, Star, Gift, Sparkles, Crown, User, Mail, Phone, Calendar, MapPin, Lock, IdCardIcon, Users, LoaderCircle } from 'lucide-angular';
 import { InputComponent } from "../../../shared/ui/input/Input.component";
@@ -15,6 +15,8 @@ import { passwordMatchValidator } from "../../../shared/utils/validatePassword";
 import {ListsItemsService} from '../../../core/services/listsItemsService.service';
 import {BaseSelectComponent} from '../../../shared/ui/selects/BaseSelectComponent.component';
 import {CheckboxComponent} from '../../../shared/ui/checkbox/CheckBox.component';
+import {AuthService} from '../../../core/services/auth.service';
+import {AlertService} from '../../../core/services/alert.service';
 
 @Component({
   selector: 'register',
@@ -50,6 +52,9 @@ export class Register implements OnInit {
 
   private listService = inject(ListsItemsService);
   private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private alertService = inject(AlertService);
 
   readonly documentTypes = this.listService.documentTypes;
   readonly genders = this.listService.genders;
@@ -94,13 +99,34 @@ export class Register implements OnInit {
     this.listService.loadGenders();
   }
 
-  onSubmit() {
-    if (this.form.valid) {
-      console.log('✅ Datos del formulario:', this.form.value);
-      alert("¡Registro exitoso! (Esto es una demo)");
-    } else {
-      console.warn("⚠️ Errores en el formulario:", this.form.errors);
+  async onSubmit() {
+    if (this.form.invalid) {
       this.form.markAllAsTouched();
+      this.alertService.toastError('Por favor, corrige los errores en el formulario.');
+      return;
+    }
+
+    const formValue = this.form.value;
+    const registerPayload = {
+      firstName: formValue.firstName,
+      firstLastName: formValue.lastName,
+      documentNumber: formValue.numDocument,
+      documentCode: formValue.docType,
+      genderCode: formValue.gender,
+      user: {
+        user: formValue.email,
+        password: formValue.password,
+        mail: formValue.email,
+        cellular: formValue.phone?.replace(/\s/g, '')
+      }
+    };
+
+    try {
+      await this.authService.register(registerPayload);
+      this.alertService.success('¡Registro Exitoso!', 'Ya puedes iniciar sesión con tus credenciales.');
+      this.router.navigate(['/login']);
+    } catch (error) {
+      this.alertService.error('Error en el Registro', `${error}`);
     }
   }
 }

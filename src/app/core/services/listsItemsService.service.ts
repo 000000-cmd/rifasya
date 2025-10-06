@@ -16,7 +16,7 @@ export class ListsItemsService {
   loadDocumentTypes(): Promise<void> {
     if (this.documentTypes().length > 0) return Promise.resolve();
     this.isLoading.set(true);
-    return GET(new DataFetch('api/lists/documenttypes'))
+    return GET(new DataFetch('lists/documenttypes'))
       .then(async (response) => {
         if (response.ok) this.documentTypes.set(await response.json());
         else return Promise.reject(response.statusText);
@@ -31,7 +31,7 @@ export class ListsItemsService {
   loadGenders(): Promise<void> {
     if (this.genders().length > 0) return Promise.resolve();
     this.isLoading.set(true);
-    return GET(new DataFetch('api/lists/gendertypes'))
+    return GET(new DataFetch('lists/gendertypes'))
       .then(async (response) => {
         if (response.ok) this.genders.set(await response.json());
         else return Promise.reject(response.statusText);
