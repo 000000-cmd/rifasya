@@ -1,20 +1,30 @@
-<div class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 animate-fade-in" (click)="onClose()">
-  <div class="relative w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 border-t-4 animate-scale-in"
-       [ngClass]="alertClasses" (click)="$event.stopPropagation()">
+<div class="fixed inset-0 bg-gray-900 bg-opacity-25 backdrop-blur-sm z-50 flex items-start justify-center p-4 pt-20 animate-fade-in-fast" (click)="onClose()">
+  <div class="relative w-full max-w-md bg-white rounded-2xl shadow-xl p-6 transform animate-slide-in-down"
+       (click)="$event.stopPropagation()">
 
-    <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-white mb-6 shadow-lg">
-      <lucide-angular [name]="alert.icon" [class]="'w-12 h-12'" [ngClass]="iconClasses"></lucide-angular>
+    <div class="flex items-start space-x-4">
+      <!-- Icono Principal -->
+      <div class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full" [ngClass]="this.alertClasses['iconContainer']">
+        <lucide-angular [name]="alert.icon" class="w-7 h-7" [ngClass]="this.alertClasses['icon']"></lucide-angular>
+      </div>
+
+      <!-- Contenido -->
+      <div class="flex-1">
+        <h3 class="text-lg font-semibold text-gray-800">{{ alert.title }}</h3>
+        <p class="text-sm text-gray-600 mt-1">{{ alert.message }}</p>
+      </div>
+
+      <!-- Botón de Cerrar (sutil) -->
+      <button (click)="onClose()" class="text-gray-400 hover:text-gray-600 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
     </div>
 
-    <div class="text-center">
-      <h3 class="text-2xl font-bold mb-2">{{ alert.title }}</h3>
-      <p class="text-base opacity-80">{{ alert.message }}</p>
-    </div>
-
-    <div class="mt-8 text-center">
+    <!-- Botón de Acción -->
+    <div class="mt-6 text-right">
       <button (click)="onClose()"
-              class="px-8 py-3 bg-white font-semibold rounded-lg shadow-md hover:bg-gray-100 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2"
-              [ngClass]="'focus:ring-' + alert.type + '-500'">
+              class="px-6 py-2 text-sm font-semibold text-white rounded-lg shadow-md hover:opacity-90 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2"
+              [ngClass]="[this.alertClasses['button'], this.alertClasses['buttonFocus']]">
         Entendido
       </button>
     </div>

@@ -1,61 +1,55 @@
 import { Routes } from '@angular/router';
+import { PublicLayoutComponent } from './layout/PublicLayout.component';
 import { Home } from './views/home/home.component';
-import { DefaultLayoutComponent } from './layout/DefaultLayout.component';
-import { AuthLayoutComponent } from './layout/AuthLayout.component';
-import { RoleRedirectGuard } from './core/guards/redirectGuardian.guard';
-import { DummyComponent } from './views/dashboard/Dummy.component';
-import { UserDashboardComponent } from './views/dashboard/user/pages/userDashboard/userDashboard.component';
-import { AdminDashboardComponent } from './views/dashboard/admin/pages/adminDashboard/adminDashboard.component';
-import { AppLayoutComponent } from './views/dashboard/AppLayout.component';
 import { Register } from './views/auth/register/Register.component';
 import { Login } from './views/auth/login/Login.component';
-import { AdminLayoutComponent } from './layout/admin/AdminLayout.component';
-
+import { authGuard } from './core/guards/auth.guard';
+import { adminGuard } from './core/guards/admin.guard';
+import {RoleRedirectGuard} from './core/guards/redirect.guard';
 
 export const routes: Routes = [
+  // --- Rutas Públicas (usan el PublicLayout) ---
   {
     path: '',
-    component: DefaultLayoutComponent,
+    component: PublicLayoutComponent,
     children: [
-      { path: '',         component: Home },
+      { path: '', component: Home, pathMatch: 'full' },
+      // 2. Aplicar el guardián a las rutas de login y registro
+      { path: 'login', component: Login },
       { path: 'register', component: Register },
-      { path: 'login',    component: Login },
+    ]
+  },
+
+  // --- Rutas Protegidas (usan el DashboardLayout) ---
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./layout/DashboardLayout.component').then(m => m.DashboardLayoutComponent),
+    canActivate: [authGuard],
+    children: [
+      // 1. La ruta de entrada al dashboard. Su único trabajo es activar el RoleRedirectGuard.
+      { path: '', canActivate: [RoleRedirectGuard], children:[] },
+
+      // 2. Rutas de Administrador (protegidas por el adminGuard)
       {
-        path: 'dashboard', component: AppLayoutComponent ,
+        path: 'admin',
+        canActivate: [adminGuard],
         children: [
-          {
-            path: 'redir',
-            canActivate: [RoleRedirectGuard],
-            component: DummyComponent
-          },
-          {
-            path: 'user',
-            component: UserDashboardComponent
-          },
-          {
-            path: 'admin',
-            component: AdminDashboardComponent
-          }
+          { path: '', loadComponent: () => import('./views/dashboard/admin/pages/adminDashboard/adminDashboard.component').then(m => m.AdminDashboardComponent) },
+          // Aquí añadirías tus otras rutas de admin, ej:
+          // { path: 'users', loadComponent: () => import('./views/dashboard/admin/pages/users/users.component').then(m => m.UsersComponent) },
         ]
       },
+
+      // 3. Rutas de Usuario
       {
-        path: 'dummy',
-        component: DummyComponent
+        path: 'user',
+        children: [
+          { path: '', loadComponent: () => import('./views/dashboard/user/pages/userDashboard/userDashboard.component').then(m => m.UserDashboardComponent) },
+        ]
       }
     ]
   },
-  {
-    path: '',
-    component: AuthLayoutComponent,
-    children: [
-      //  { path: 'login', component: "login" },
-    ]
-  },
-  {
-    path: 'admin',
-    component: AdminLayoutComponent,
-    children: [
-      //  { path: 'login', component: "login" },
-    ]
-  }
+
+  // --- Ruta Fallback (Cualquier otra URL) ---
+  { path: '**', redirectTo: '' }
 ];
