@@ -9,6 +9,7 @@ import { AdminDashboardComponent } from './views/dashboard/admin/pages/adminDash
 import { AppLayoutComponent } from './views/dashboard/AppLayout.component';
 import { Register } from './views/auth/register/Register.component';
 import { Login } from './views/auth/login/Login.component';
+import { AdminLayoutComponent } from './layout/admin/AdminLayout.component';
 
 
 export const routes: Routes = [
@@ -46,6 +47,13 @@ export const routes: Routes = [
   {
     path: '',
     component: AuthLayoutComponent,
+    children: [
+      //  { path: 'login', component: "login" },
+    ]
+  },
+  {
+    path: 'admin',
+    component: AdminLayoutComponent,
     children: [
       //  { path: 'login', component: "login" },
     ]

@@ -102,13 +102,16 @@ $dark-theme: (
 :root {
   // Variables globales que no cambian con el tema
   --primary-color: #{$primary-color};
+  --primary-color-hover: color-mix(in srgb, var(--primary-color) 85%, black);
+  --primary-color-light: color-mix(in srgb, var(--primary-color) 70%, white);
   --secundary-color: #{$secondary-color};
   --aux1-color: #{$aux1-color};
   --aux2-color: #{$aux2-color};
   --aux3-color: #{$aux3-color};
   --font-size: 16px;
   --radius: 0.625rem;
-
+  --accent-color: #F8A5FF;
+  --accent-color2: #8b5cf6;
   // Aplicamos el tema claro
   @include apply-theme($light-theme);
 }
