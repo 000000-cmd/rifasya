@@ -1,0 +1,49 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Usamos tu variable --background con opacidad para el fondo */
+  background-color: color-mix(in srgb, var(--background) 80%, transparent);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  /* El backdrop-filter que ya usas le dará un buen efecto */
+  backdrop-filter: blur(4px);
+}
+
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+
+  /* El borde base usará tu variable --muted o --border */
+  border: 6px solid var(--muted);
+
+  /* El color principal del spinner usará tu variable --primary, que cambia con el tema */
+  border-top-color: var(--primary);
+
+  animation: spin 1s linear infinite;
+}
+
+.message {
+  /* El color del texto usará la variable de "foreground" para asegurar el contraste */
+  color: var(--foreground);
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

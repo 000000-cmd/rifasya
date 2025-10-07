@@ -1,19 +1,33 @@
-import { DataFetch } from "./DataFetch";  
+import { DataFetch } from "./DataFetch";
 import { environment } from "../../../environments/environments";
 
 export const API = environment.apiUrl
 
+// Función auxiliar para asegurar que el body es del tipo correcto
 function ensureBody(body: unknown): BodyInit | null {
+  if (body === null || body === undefined) {
+    return null;
+  }
   if (typeof body === "object" && !(body instanceof FormData)) {
     return JSON.stringify(body);
   }
   return body as BodyInit;
 }
-function buildHeaders(custom: Record<string, string>) {
-  return {
+
+function buildHeaders(custom: Record<string, string>): HeadersInit {
+  const headers: Record<string, string> = {
     "Content-Type": "application/json",
     ...custom,
   };
+
+  // Obtenemos el token desde el servicio de autenticación
+  const token = localStorage.getItem('accessToken'); // Usamos la misma clave que en AuthService
+
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  return headers;
 }
 
 // ---- GET ----

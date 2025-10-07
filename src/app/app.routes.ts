@@ -6,6 +6,7 @@ import { Login } from './views/auth/login/Login.component';
 import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
 import {RoleRedirectGuard} from './core/guards/redirect.guard';
+import {publicGuard} from './core/guards/public.guard';
 
 export const routes: Routes = [
   // --- Rutas Públicas (usan el PublicLayout) ---
@@ -14,9 +15,9 @@ export const routes: Routes = [
     component: PublicLayoutComponent,
     children: [
       { path: '', component: Home, pathMatch: 'full' },
-      // 2. Aplicar el guardián a las rutas de login y registro
-      { path: 'login', component: Login },
-      { path: 'register', component: Register },
+      // 2. Aplica el guardián a las rutas de login y registro
+      { path: 'login', component: Login, canActivate: [publicGuard] },
+      { path: 'register', component: Register, canActivate: [publicGuard] },
     ]
   },
 
