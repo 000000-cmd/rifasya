@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Bell, ChartColumn, CircleQuestionMark, DollarSign, LayoutDashboard, LucideIconData, Megaphone, Ticket, TrendingUp, Trophy, User, LucideAngularModule } from 'lucide-angular';
+import packageInfo from '../../../../../package.json';
 
 export interface MenuItem {
   id: string;
@@ -18,6 +19,8 @@ export interface MenuItem {
   templateUrl: "./AdminSidebar.html"
 })
 export class AdminSidebarComponent {
+  public appVersion: string = `v${packageInfo.version}`;
+
   // Recibe el estado del menú móvil desde el layout padre
   @Input() isMobileMenuOpen: boolean = false;
   // Emite un evento para notificar al layout padre que debe cambiar el estado

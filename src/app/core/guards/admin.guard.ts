@@ -8,7 +8,6 @@ export const adminGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   return authService.currentUser$.pipe(
-    filter(user => user !== undefined), // 1. Espera
     take(1),                             // 2. Toma el valor real
     map(user => {
       // Si el usuario tiene el rol 'ADMIN', permite el acceso.

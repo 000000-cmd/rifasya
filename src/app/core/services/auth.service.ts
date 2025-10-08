@@ -52,33 +52,27 @@ export class AuthService {
     return user;
   }
 
-  async initializeAuthState(): Promise<boolean> {
-    // Esta función solo debe ejecutarse en el navegador, ya que depende de cookies
+  /**
+   * Intenta restaurar la sesión del usuario al iniciar la app.
+   * Este método está diseñado para NO fallar y bloquear la app.
+   * O tiene éxito y establece el usuario, o falla silenciosamente y establece el usuario a null.
+   */
+  async initializeAuthState(): Promise<void> {
     if (!isPlatformBrowser(this.platformId)) {
+      // En el servidor, no hacemos nada y establecemos el estado a "no logueado".
       this.currentUserSubject.next(null);
-      return Promise.resolve(true);
+      return;
     }
 
     try {
-      const refreshResponse = await POST(new DataFetch("auth/refresh"));
-      if (!refreshResponse.ok) throw new Error('No active session');
-
-      const tokens: { accessToken: string } = await refreshResponse.json();
-      localStorage.setItem(this.TOKEN_KEY, tokens.accessToken);
-
-      const userResponse = await GET(new DataFetch("auth/me"));
-      if (!userResponse.ok) throw new Error('Failed to fetch user');
-
-      const user: User = await userResponse.json();
-      this.currentUserSubject.next(user);
-      this.public_user_state = user;
+      // Este es el método que ya creamos, que refresca el token Y obtiene los datos del usuario.
+      await this.refreshTokenAndSetUser();
     } catch (error) {
-      localStorage.removeItem(this.TOKEN_KEY);
+      // Si refreshTokenAndSetUser falla (ej. no hay refresh token válido),
       this.currentUserSubject.next(null);
-      this.public_user_state = null;
     }
-    return true;
   }
+
 
   async refreshToken(): Promise<{ accessToken: string }> {
     // El refresco depende de una cookie HttpOnly, por lo que solo tiene sentido en el navegador.
