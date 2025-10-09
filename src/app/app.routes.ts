@@ -16,8 +16,19 @@ export const routes: Routes = [
     children: [
       { path: '', component: Home, pathMatch: 'full' },
       // 2. Aplica el guardián a las rutas de login y registro
-      { path: 'login', component: Login, canActivate: [publicGuard] },
-      { path: 'register', component: Register, canActivate: [publicGuard] },
+      { path: 'login',
+        component: Login,
+        canActivate: [publicGuard]
+      },
+      { path: 'register',
+        component: Register,
+        canActivate: [publicGuard]
+      },
+      {
+        path: 'status',
+        title: 'Estado del Servicio',
+        loadComponent: () => import('./layout/ServiceStatus.component').then(m => m.ServiceStatusComponent)
+      },
     ]
   },
 
