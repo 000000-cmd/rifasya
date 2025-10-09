@@ -1,6 +1,6 @@
 // export const environment = {
 //   production: false,
-//   apiUrl: "http://3.14.85.162:8080/api",
+//   apiUrl: "http://3.134.109.254:8080/api",
 //   appName: "Rifasya"
 // };
 
