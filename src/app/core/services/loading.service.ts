@@ -22,4 +22,8 @@ export class LoadingService {
     this.messageSubject.next('');
     this.isLoadingSubject.next(false);
   }
+
+  updateMessage(message: string): void {
+    this.messageSubject.next(message);
+  }
 }

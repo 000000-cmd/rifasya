@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {RouterLink, RouterOutlet} from '@angular/router';
 import { LogoComponent } from '../shared/ui/logo.component';
 import { ButtonComponent } from '../shared/ui/buttons/button/button.component';
+import packageInfo from '../../../package.json'
 
 
 @Component({
@@ -128,10 +129,14 @@ import { ButtonComponent } from '../shared/ui/buttons/button/button.component';
           <p class="text-gray-400 text-sm">© 2025 RifasYA. Todos los derechos reservados.</p>
           <div class="flex space-x-6 mt-4 md:mt-0">
             <span class="text-gray-400 text-sm">Licencia SEGOB: RF-2024-001</span>
-            <span class="text-gray-400 text-sm">Co Hecho en Colombia</span></div>
+            <span class="text-gray-400 text-sm">Co Hecho en Colombia</span>
+            <span class="text-gray-400 text-sm">{{ appVersion }}</span>
+          </div>
         </div>
       </div>
     </footer>
   `
 })
-export class PublicLayoutComponent {}
+export class PublicLayoutComponent {
+  public appVersion: string = `v${packageInfo.version}`;
+}

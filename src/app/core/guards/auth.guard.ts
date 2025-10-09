@@ -8,7 +8,6 @@ export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   return authService.currentUser$.pipe(
-    filter(user => user !== undefined), // 1. Espera
     take(1),                             // 2. Toma el valor real
     map(user => {
       // Si el usuario es 'null', no está logueado.

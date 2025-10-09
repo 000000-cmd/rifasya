@@ -8,7 +8,6 @@ export const RoleRedirectGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   return auth.currentUser$.pipe(
-    filter(user => user !== undefined), // 1. Espera
     take(1),                             // 2. Toma el valor real
     map(user => {
       if (!user) {

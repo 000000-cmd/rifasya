@@ -1,6 +1,6 @@
 {
   "name": "rifasya",
-  "version": "0.0.0",
+  "version": "0.1.0RC1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
