@@ -1,4 +1,4 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
+import {AbstractControl, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 
   export function ValidadorInput(validator: ValidatorFn, fieldName: string = "campo", helperText: string = ""): ValidatorFn  {
     return (control: AbstractControl): ValidationErrors | null => {
@@ -38,4 +38,13 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 
       return null; // válido
     };
+  }
+
+export function optionalMinLength(minLength: number): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!control.value) {
+      return null;
+    }
+    return Validators.minLength(minLength)(control); // Aplica minLength si hay valor
   };
+}

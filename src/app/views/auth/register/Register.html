@@ -58,6 +58,21 @@
             <base-input formControlName="lastName" placeholder="Tu apellido" [iconLabel]="User" label="Apellido"></base-input>
           </div>
           <div class="grid md:grid-cols-2 gap-6">
+            <base-input
+              formControlName="username"
+              label="Usuario (Opcional)"
+              placeholder="Tu nombre de usuario"
+              [iconLabel]="User"
+              tooltipText="Si dejas este campo vacío, tu usuario será tu nombre y apellido juntos (ej: juanperez)">
+            </base-input>
+            <custom-datepicker
+              formControlName="birthDate"
+              label="Fecha de nacimiento">
+            </custom-datepicker>
+          </div>
+
+
+          <div class="grid md:grid-cols-2 gap-6">
             <base-select
               formControlName="docType"
               label="Tipo de documento"
@@ -72,7 +87,11 @@
             <base-input mask="000 0000000" formControlName="phone" placeholder="Tu teléfono" [iconLabel]="Phone" label="Teléfono"></base-input>
           </div>
           <div class="grid md:grid-cols-2 gap-6">
-            <base-input formControlName="city" placeholder="Ciudad" [iconLabel]="MapPin" label="Ciudad"></base-input>
+            <app-location-input
+              formControlName="location"
+              label="Ubicación"
+              (openModal)="isLocationModalOpen = true">
+            </app-location-input>
             <base-select
               formControlName="gender"
               label="Género"
@@ -115,6 +134,12 @@
       </div>
     </app-card>
   </div>
+  @if (isLocationModalOpen) {
+    <app-location-modal
+      (close)="isLocationModalOpen = false"
+      (save)="onLocationSave($event)">
+    </app-location-modal>
+  }
   <router-outlet></router-outlet>
 </main>
 
