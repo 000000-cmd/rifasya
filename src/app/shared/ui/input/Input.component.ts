@@ -73,19 +73,11 @@ export class InputComponent implements ControlValueAccessor {
   }
 
   get errorMessage(): string | null {
-    if (this.hasError && this.control?.errors) {
-      // Si existe un error personalizado de tu wrapper, muéstralo.
-      if (this.control.errors['customError']) {
-        return this.control.errors['customError'];
-      }
-      // Mantenemos el validador de grupo para las contraseñas que no usa el wrapper.
-      if (this.control.errors['passwordMismatch']) {
-        return 'Las contraseñas no coinciden';
-      }
+    if (this.hasError && this.control?.errors?.['customError']) {
+      return this.control.errors['customError'];
     }
     return null;
   }
-  // Métodos inyectados por ControlValueAccesor
 
   value!: string;
 

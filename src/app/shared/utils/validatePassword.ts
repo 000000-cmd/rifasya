@@ -1,17 +1,35 @@
-import { AbstractControl, ValidationErrors } from "@angular/forms";
+import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 
-export function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
-  const password = control.get('password')?.value;
-  const confirmPassword = control.get('confirmPassword')?.value;
+export const passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  const password = control.get('password');
+  const confirmPassword = control.get('confirmPassword');
 
-  const mismatch = password && confirmPassword && password !== confirmPassword;
+  if (!password || !confirmPassword) {
+    return null;
+  }
+
+  const error = {
+    passwordMismatch: true,
+    customError: 'Las contraseñas no coinciden'
+  };
+
+  const mismatch = password.value !== confirmPassword.value;
+
   if (mismatch) {
-    control.get('confirmPassword')?.setErrors({ passwordMismatch: true });
-    return { passwordMismatch: true };
+    confirmPassword.setErrors({ ...confirmPassword.errors, ...error });
+    return error;
   } else {
-    if (control.get('confirmPassword')?.hasError('passwordMismatch')) {
-      control.get('confirmPassword')?.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+    const confirmErrors = confirmPassword.errors;
+    if (confirmErrors && confirmErrors['passwordMismatch']) {
+      delete confirmErrors['passwordMismatch'];
+      delete confirmErrors['customError'];
+
+      if (Object.keys(confirmErrors).length === 0) {
+        confirmPassword.setErrors(null);
+      } else {
+        confirmPassword.setErrors(confirmErrors);
+      }
     }
     return null;
   }
-}
+};

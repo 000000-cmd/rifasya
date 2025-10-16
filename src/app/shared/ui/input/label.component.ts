@@ -11,18 +11,12 @@ import { ToolTipComponent} from '../ToolTip.component';
   template: `
     <label [for]="id" class="flex items-center gap-2 font-bold text-gray-700">
       @if(icon) {
-        <lucide-angular
-          [img]="icon"
-          class="w-4 h-4 text-purple-600">
-        </lucide-angular>
+        <lucide-angular [img]="icon" class="w-4 h-4 text-purple-600"></lucide-angular>
       }
-
       {{ label }}
-
       @if (tooltipText) {
-        <app-tooltip [text]="tooltipText"></app-tooltip>
+        <app-tooltip [text]="tooltipText" [variant]="tooltipVariant"></app-tooltip>
       }
-
       @if (control?.touched || control?.dirty) {
         <lucide-angular
           [img]="hasError ? invalidIcon : validIcon"
@@ -39,6 +33,7 @@ export class BaseInputLabel {
   @Input() label = '';
   @Input() control: AbstractControl | null = null;
   @Input() tooltipText?: string;
+  @Input() tooltipVariant: 'info' | 'warning' | 'error' = 'info';
 
   readonly validIcon = BadgeCheck;
   readonly invalidIcon = BadgeAlert;

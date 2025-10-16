@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import {Component, inject, OnInit, effect, ViewChild} from "@angular/core";
+import {Component, inject, OnInit, effect, ViewChild, Input} from "@angular/core";
 import {Router, RouterLink, RouterOutlet} from "@angular/router";
 import { LucideAngularModule, Shield, Zap, Star, Gift, Sparkles, Crown, User, Mail, Phone, Calendar, MapPin, Lock, IdCardIcon, Users, LoaderCircle } from 'lucide-angular';
 import { InputComponent } from "../../../shared/ui/input/Input.component";
@@ -17,6 +17,7 @@ import {AlertService} from '../../../core/services/alert.service';
 import {CustomDatepickerComponent} from '../../../shared/ui/CustomDatePicker.component';
 import {LocationInputComponent} from '../../../shared/ui/input/LocationInput.component';
 import {LocationModalComponent} from '../../../shared/ui/LocationModal.component';
+import {validateLocation} from '../../../shared/utils/ValidateLocation';
 
 @Component({
   selector: 'register',
@@ -44,11 +45,11 @@ export class Register implements OnInit {
   readonly Mail = Mail;
   readonly Phone = Phone;
   readonly Calendar = Calendar;
-  readonly MapPin = MapPin;
   readonly Lock = Lock;
   readonly Card = IdCardIcon;
   readonly GenderIcon = Users;
   readonly Loader = LoaderCircle;
+  readonly MapPin = MapPin;
 
   private listService = inject(ListsItemsService);
   private fb = inject(FormBuilder);
@@ -69,7 +70,7 @@ export class Register implements OnInit {
     birthDate: this.fb.control<string | null>(null, [ValidadorInput(Validators.required, "Fecha de nacimiento")]),
     email: this.fb.control<string | null>("", [ValidadorInput(Validators.required, "Correo"), ValidadorInput(Validators.email)]),
     phone: this.fb.control<string | null>("", [ValidadorInput(Validators.required, "Teléfono")]),
-    location: this.fb.control<any | null>(null, [Validators.required]),
+    location: this.fb.control<any | null>(null, [ValidadorInput(Validators.required, "Ubicación")]),
     gender: this.fb.control<string | null>(null, [ValidadorInput(Validators.required, "Género")]),
     docType : this.fb.control<string | null>(null, [ValidadorInput(Validators.required, "Tipo de documento")]),
     numDocument: this.fb.control<string | null>("", [ValidadorInput(Validators.required, "Número de Documento"), ValidadorInput(Validators.minLength(3)), ValidadorInput(Validators.maxLength(14))]),
@@ -77,16 +78,15 @@ export class Register implements OnInit {
     confirmPassword: this.fb.control<string | null>("", [ValidadorInput(Validators.required, "Contraseña")]),
     acceptTerms: this.fb.control<boolean>(false, [ValidadorInput(Validators.requiredTrue, "Términos y Condiciones")]),
     acceptMarketing: this.fb.control<boolean>(false),
-  }, { validators: passwordMatchValidator });
+  }, {
+    validators: [passwordMatchValidator, validateLocation()]
+  });
 
   constructor() {
-    // Un 'effect' reacciona a los cambios en los signals que lee.
     effect(() => {
-      const loading = this.isLoading(); // Leemos el signal
+      const loading = this.isLoading();
       const docTypeControl = this.form.get('docType');
       const genderControl = this.form.get('gender');
-
-      // Deshabilitamos o habilitamos los controles desde el código.
       if (loading) {
         docTypeControl?.disable();
         genderControl?.disable();
@@ -103,9 +103,44 @@ export class Register implements OnInit {
   }
 
   onLocationSave(locationData: any) {
-    this.form.get('location')?.setValue(locationData);
-    this.locationInput.updateValue(locationData);
+    const locationControl = this.form.get('location');
+    locationControl?.setValue(locationData);
+    locationControl?.markAsTouched(); // <-- FIX 1: Marca el campo como 'tocado'
     this.isLocationModalOpen = false;
+  }
+
+  get locationError(): string | null {
+    const control = this.form.get('location');
+    if (control?.errors && (control.touched || control.dirty)) {
+      return control.errors['customError'] || null;
+    }
+    return null;
+  }
+
+  get locationTooltip(): string | undefined {
+    const control = this.form.get('location');
+
+    if (control?.hasError('locationIncomplete') && control.errors?.['missing']) {
+      const missing = control.errors['missing'].join('<br>&bull; ');
+      return `Faltan campos:<br>&bull; ${missing}`;
+    }
+
+    // Si es válido y ha sido tocado, no muestra tooltip
+    if (control?.valid && (control.touched || control.dirty)) {
+      // FIX: Devuelve 'undefined' en lugar de 'null'
+      return undefined;
+    }
+
+    // Estado inicial
+    return 'Selecciona tu ubicación completa, desde el país hasta el barrio/vereda.';
+  }
+
+  get locationTooltipVariant(): 'error' | 'info' {
+    const control = this.form.get('location');
+    if (control?.errors && (control.touched || control.dirty)) {
+      return 'error';
+    }
+    return 'info';
   }
 
   async onSubmit() {

@@ -90,7 +90,9 @@
             <app-location-input
               formControlName="location"
               label="Ubicación"
-              (openModal)="isLocationModalOpen = true">
+              [iconLabel]="MapPin"
+              (openModal)="isLocationModalOpen = true"
+              defaultTooltipText="Selecciona tu ubicación completa, desde el país hasta el barrio/vereda.">
             </app-location-input>
             <base-select
               formControlName="gender"
@@ -136,6 +138,7 @@
   </div>
   @if (isLocationModalOpen) {
     <app-location-modal
+      [initialValue]="form.get('location')?.value"
       (close)="isLocationModalOpen = false"
       (save)="onLocationSave($event)">
     </app-location-modal>
