@@ -23,7 +23,7 @@ export class AdminSidebarComponent {
 
   // Recibe el estado del menú móvil desde el layout padre
   @Input() isMobileMenuOpen: boolean = false;
-  // Emite un evento para notificar al layout padre que debe cambiar el estado
+  @Input() isSubMenuOpen: boolean = false;
   @Output() mobileMenuToggle = new EventEmitter<void>();
 
   public menuItems: MenuItem[] = [
@@ -36,10 +36,9 @@ export class AdminSidebarComponent {
     { id: 'marketing',    label: 'Marketing',         icon: Megaphone,          link: '/dashboard/admin/marketing' },
     { id: 'reports',      label: 'Reportes',          icon: ChartColumn,        link: '/dashboard/admin/reports' },
     { id: 'notify',       label: 'Notificaciones',    icon: Bell,               link: '/dashboard/admin/notify' },
-    { id: 'help',         label: 'Ayuda',             icon: CircleQuestionMark, link: '/dashboard/admin/help' },
+    { id: 'condig',       label: 'Configuracion',     icon: CircleQuestionMark, link: '/dashboard/admin/lists' },
   ];
 
-  // Este método se llama desde el HTML para emitir el evento
   toggleMobileMenu(): void {
     this.mobileMenuToggle.emit();
   }
@@ -50,4 +49,6 @@ export class AdminSidebarComponent {
       this.toggleMobileMenu();
     }
   }
+
+  protected readonly onmouseenter = onmouseenter;
 }

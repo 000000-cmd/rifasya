@@ -46,9 +46,14 @@ export const routes: Routes = [
         path: 'admin',
         canActivate: [adminGuard],
         children: [
-          { path: '', loadComponent: () => import('./views/dashboard/admin/pages/adminDashboard/adminDashboard.component').then(m => m.AdminDashboardComponent) },
-          // Aquí añadirías tus otras rutas de admin, ej:
-          // { path: 'users', loadComponent: () => import('./views/dashboard/admin/pages/users/users.component').then(m => m.UsersComponent) },
+          {
+            path: '',
+            loadComponent: () => import('./views/dashboard/admin/pages/adminDashboard/adminDashboard.component').then(m => m.AdminDashboardComponent)
+          },
+          {
+            path: 'lists',
+            loadComponent: () => import('./views/dashboard/admin/pages/adminConfiguration/ListConfiguration.component').then(m => m.ListConfigurationComponent)
+          },
         ]
       },
 

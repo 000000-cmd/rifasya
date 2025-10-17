@@ -60,7 +60,7 @@
               routerLinkActive="bg-primary text-white shadow-lg"
               [routerLinkActiveOptions]="{exact: item.link === '/dashboard/admin'}"
               class="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group hover:bg-[var(--primary-color-light)] text-foreground"
-              (click)="handleLinkClick()"
+              (click)="handleLinkClick()" (mouseenter)="isSubMenuOpen = true" (mouseleave)="isSubMenuOpen = false"
             >
               <lucide-angular [name]="item.icon" class="group-hover:scale-110 transition-transform"></lucide-angular>
               <span class="flex-1 text-left">{{ item.label }}</span>
@@ -95,6 +95,7 @@
         </div>
       </div>
     </aside>
+
 
   <!-- Overlay para el menú móvil -->
   @if (isMobileMenuOpen) {
