@@ -1,10 +1,10 @@
-import {Component, OnInit, Output, EventEmitter, Input, HostListener, ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { LocationApiService, LocationSearchDTO} from '../../core/services/location.service';
-import { SearchableSelectComponent} from './selects/SearchableSelect.component';
-import { ListItem} from '../../core/models/TypeListItem.model';
-import {StructuredAddressComponent} from './StructureAddress.component';
+import { LocationApiService, LocationSearchDTO } from '../../core/services/location.service';
+import { SearchableSelectComponent } from './selects/SearchableSelect.component';
+import { ListItem } from '../../core/models/TypeListItem.model';
+import { StructuredAddressComponent } from './StructureAddress.component';
 
 @Component({
   selector: 'app-location-modal',
@@ -35,6 +35,15 @@ import {StructuredAddressComponent} from './StructureAddress.component';
             [disabled]="locationForm.get('neighborhoodId')!.disabled"
             (selectionChange)="onNeighborhoodSelect($event)"></app-searchable-select>
           <app-structured-address formControlName="address"></app-structured-address>
+          <div>
+            <label for="addressComplement" class="block text-sm font-medium text-gray-700">Complemento (Apto, etc.)</label>
+            <input type="text" id="addressComplement" formControlName="addressComplement"
+                  class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3">
+          </div>
+          <div class="flex items-center">
+            <input type="checkbox" id="isCurrent" formControlName="isCurrent" class="h-4 w-4 text-purple-600 border-gray-300 rounded">
+            <label for="isCurrent" class="ml-2 block text-sm text-gray-900">Establecer como ubicación actual</label>
+          </div>
         </form>
         <div class="flex justify-end space-x-3 pt-4">
           <button (click)="closeModal()" type="button" class="px-4 py-2 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 transition-colors">Cancelar</button>
@@ -49,7 +58,6 @@ export class LocationModalComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<any>();
   @ViewChild('modalContent') modalContentRef!: ElementRef;
-
   locationForm: FormGroup;
   countries: ListItem[] = [];
   departments: ListItem[] = [];
@@ -60,90 +68,56 @@ export class LocationModalComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private locationApi: LocationApiService) {
     this.locationForm = this.fb.group({
-      countryId: [null], countryName: [null],
-      departmentId: [{ value: null, disabled: true }], departmentName: [null],
-      municipalityId: [{ value: null, disabled: true }], municipalityName: [null],
-      neighborhoodId: [{ value: null, disabled: true }], neighborhoodName: [null],
-      address: [null]
+      countryId: [null], countryCode: [null], countryName: [null],
+      departmentId: [{ value: null, disabled: true }], departmentCode: [null], departmentName: [null],
+      municipalityId: [{ value: null, disabled: true }], municipalityCode: [null], municipalityName: [null],
+      neighborhoodId: [{ value: null, disabled: true }], neighborhoodCode: [null], neighborhoodName: [null],
+      address: [null],
+      addressComplement: [''],
+      isCurrent: [true]
     });
   }
-
   @HostListener('document:mousedown', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     if (this.ready && !this.closing && !this.modalContentRef.nativeElement.contains(event.target)) {
       this.onSave();
     }
   }
-
-  private mapToListItem = (dtos: LocationSearchDTO[]): ListItem[] => dtos?.map((dto, i) => ({ code: dto.id, name: dto.name, order: i + 1 })) || [];
-
+  private mapToListItem = (dtos: LocationSearchDTO[]): ListItem[] => dtos?.map((dto, i) => ({ id: dto.id, code: dto.id, name: dto.name, order: i + 1, payload: { code: dto.code } })) || [];
   async ngOnInit() {
     this.countries = this.mapToListItem(await this.locationApi.getCountries());
-    if (this.initialValue) {
-      this.locationForm.patchValue(this.initialValue);
-      await this.loadInitialData();
-    }
+    if (this.initialValue) { this.locationForm.patchValue(this.initialValue); await this.loadInitialData(); }
     setTimeout(() => this.ready = true, 0);
   }
-
   private async loadInitialData() {
-    const value = this.initialValue;
-    if (!value) return;
-    if (value.countryId) {
-      this.locationForm.get('departmentId')?.enable();
-      this.departments = this.mapToListItem(await this.locationApi.getDepartmentsByCountry(value.countryId));
-    }
-    if (value.departmentId) {
-      this.locationForm.get('municipalityId')?.enable();
-      this.municipalities = this.mapToListItem(await this.locationApi.getMunicipalitiesByDepartment(value.departmentId));
-    }
-    if (value.municipalityId) {
-      this.locationForm.get('neighborhoodId')?.enable();
-      this.neighborhoods = this.mapToListItem(await this.locationApi.getNeighborhoodsByMunicipality(value.municipalityId));
-    }
+    const value = this.initialValue; if (!value) return;
+    if (value.countryId) { this.locationForm.get('departmentId')?.enable(); this.departments = this.mapToListItem(await this.locationApi.getDepartmentsByCountry(value.countryId)); }
+    if (value.departmentId) { this.locationForm.get('municipalityId')?.enable(); this.municipalities = this.mapToListItem(await this.locationApi.getMunicipalitiesByDepartment(value.departmentId)); }
+    if (value.municipalityId) { this.locationForm.get('neighborhoodId')?.enable(); this.neighborhoods = this.mapToListItem(await this.locationApi.getNeighborhoodsByMunicipality(value.municipalityId)); }
   }
-
   async onCountrySelect(country: ListItem) {
-    this.locationForm.patchValue({ countryId: country.code, countryName: country.name });
-    this.locationForm.get('departmentId')?.reset();
-    this.locationForm.get('municipalityId')?.reset();
-    this.locationForm.get('municipalityId')?.disable();
-    this.locationForm.get('neighborhoodId')?.reset();
-    this.locationForm.get('neighborhoodId')?.disable();
-    this.municipalities = [];
-    this.neighborhoods = [];
+    this.locationForm.patchValue({ countryId: country.id, countryCode: country.payload.code, countryName: country.name });
+    this.locationForm.get('departmentId')?.reset(); this.locationForm.get('municipalityId')?.reset();
+    this.locationForm.get('municipalityId')?.disable(); this.locationForm.get('neighborhoodId')?.reset();
+    this.locationForm.get('neighborhoodId')?.disable(); this.municipalities = []; this.neighborhoods = [];
     this.locationForm.get('departmentId')?.enable();
-    this.departments = this.mapToListItem(await this.locationApi.getDepartmentsByCountry(country.code));
+    this.departments = this.mapToListItem(await this.locationApi.getDepartmentsByCountry(country.id));
   }
-
   async onDepartmentSelect(department: ListItem) {
-    this.locationForm.patchValue({ departmentId: department.code, departmentName: department.name });
-    this.locationForm.get('municipalityId')?.reset();
-    this.locationForm.get('neighborhoodId')?.reset();
-    this.locationForm.get('neighborhoodId')?.disable();
-    this.neighborhoods = [];
+    this.locationForm.patchValue({ departmentId: department.id, departmentCode: department.payload.code, departmentName: department.name });
+    this.locationForm.get('municipalityId')?.reset(); this.locationForm.get('neighborhoodId')?.reset();
+    this.locationForm.get('neighborhoodId')?.disable(); this.neighborhoods = [];
     this.locationForm.get('municipalityId')?.enable();
-    this.municipalities = this.mapToListItem(await this.locationApi.getMunicipalitiesByDepartment(department.code));
+    this.municipalities = this.mapToListItem(await this.locationApi.getMunicipalitiesByDepartment(department.id));
   }
-
   async onMunicipalitySelect(municipality: ListItem) {
-    this.locationForm.patchValue({ municipalityId: municipality.code, municipalityName: municipality.name });
-    this.locationForm.get('neighborhoodId')?.reset();
-    this.locationForm.get('neighborhoodId')?.enable();
-    this.neighborhoods = this.mapToListItem(await this.locationApi.getNeighborhoodsByMunicipality(municipality.code));
+    this.locationForm.patchValue({ municipalityId: municipality.id, municipalityCode: municipality.payload.code, municipalityName: municipality.name });
+    this.locationForm.get('neighborhoodId')?.reset(); this.locationForm.get('neighborhoodId')?.enable();
+    this.neighborhoods = this.mapToListItem(await this.locationApi.getNeighborhoodsByMunicipality(municipality.id));
   }
-
   onNeighborhoodSelect(neighborhood: ListItem) {
-    this.locationForm.patchValue({ neighborhoodId: neighborhood.code, neighborhoodName: neighborhood.name });
+    this.locationForm.patchValue({ neighborhoodId: neighborhood.id, neighborhoodCode: neighborhood.payload.code, neighborhoodName: neighborhood.name });
   }
-
-  closeModal(): void {
-    this.closing = true;
-    setTimeout(() => this.close.emit(), 300);
-  }
-
-  onSave(): void {
-    this.closing = true;
-    setTimeout(() => this.save.emit(this.locationForm.getRawValue()), 300);
-  }
+  closeModal(): void { this.closing = true; setTimeout(() => this.close.emit(), 300); }
+  onSave(): void { this.closing = true; setTimeout(() => this.save.emit(this.locationForm.getRawValue()), 300); }
 }

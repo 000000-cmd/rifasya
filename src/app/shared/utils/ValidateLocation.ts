@@ -7,13 +7,13 @@ export function validateLocation(): ValidatorFn {
     const location = locationControl.value;
     if (!location) { return null; }
 
-    const isPartiallyIncomplete = !location.countryId || !location.departmentId || !location.municipalityId || !location.neighborhoodId;
+    const isPartiallyIncomplete = !location.countryCode || !location.departmentCode || !location.municipalityCode || !location.neighborhoodCode;
 
     if (isPartiallyIncomplete) {
       const missingFields = [];
-      if (!location.departmentId) missingFields.push('Departamento');
-      if (!location.municipalityId) missingFields.push('Municipio');
-      if (!location.neighborhoodId) missingFields.push('Barrio / Vereda');
+      if (!location.departmentCode) missingFields.push('Departamento');
+      if (!location.municipalityCode) missingFields.push('Municipio');
+      if (!location.neighborhoodCode) missingFields.push('Barrio / Vereda');
 
       const error = {
         locationIncomplete: true,

@@ -66,12 +66,8 @@ export class LocationInputComponent implements ControlValueAccessor, OnInit, DoC
     }
   }
 
-  // FIX: ngDoCheck se ejecuta en cada ciclo de detección de cambios de Angular.
-  // Es la forma más robusta de comprobar manualmente si el estado del error ha cambiado.
   ngDoCheck(): void {
     const errorMsg = this.errorMessage;
-    // Si el mensaje de error actual es diferente al último que guardamos,
-    // forzamos la actualización de la vista.
     if (errorMsg !== this._lastErrorState) {
       this._lastErrorState = errorMsg;
       this.cdr.markForCheck();

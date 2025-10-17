@@ -5,6 +5,7 @@ import { DataFetch} from '../api/DataFetch';
 // Definición del DTO que usa el servicio
 export interface LocationSearchDTO {
   id: string;
+  code: string;
   name: string;
 }
 

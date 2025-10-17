@@ -20,7 +20,7 @@ import {ListItem} from '../../../core/models/TypeListItem.model';
     <div class="w-full flex flex-col gap-2">
       <label-input [label]="label" [icon]="icon"></label-input>
       <div class="relative">
-        <button type="button" (click)="toggle()" (blur)="onTouched()" [disabled]="disabled"
+        <button [id]="_value" type="button" (click)="toggle()" (blur)="onTouched()" [disabled]="disabled"
                 class="cursor-pointer flex w-full items-center justify-between gap-2 rounded-md border bg-white px-3 py-2 text-sm outline-none h-12 focus-visible:ring-2 focus-visible:ring-purple-500 disabled:cursor-not-allowed disabled:opacity-50">
           <span class="truncate">{{ selectedLabel || placeholder }}</span>
           <lucide-angular [img]="Chevron" class="w-4 h-4 opacity-80 transition-transform duration-300 ease-in-out" [class.rotate-180]="isOpen"></lucide-angular>
@@ -31,7 +31,7 @@ import {ListItem} from '../../../core/models/TypeListItem.model';
              [class.opacity-0]="!isOpen" [class.scale-95]="!isOpen"
              [class.pointer-events-none]="!isOpen">
           @for (option of options; track option.code) {
-            <div (click)="selectItem(option)" class="flex items-center gap-2 cursor-pointer px-2 py-3 text-sm hover:bg-purple-100" [class.font-semibold]="option.code === _value">
+            <div (click)="selectItem(option)" class="flex items-center gap-2 cursor-pointer px-2 py-3 text-sm hover:bg-purple-100" [class.font-semibold]="option.code === _value" [id]="option.code">
               {{ option.name }}
             </div>
           }

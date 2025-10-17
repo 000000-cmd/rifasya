@@ -105,42 +105,8 @@ export class Register implements OnInit {
   onLocationSave(locationData: any) {
     const locationControl = this.form.get('location');
     locationControl?.setValue(locationData);
-    locationControl?.markAsTouched(); // <-- FIX 1: Marca el campo como 'tocado'
+    locationControl?.markAsTouched();
     this.isLocationModalOpen = false;
-  }
-
-  get locationError(): string | null {
-    const control = this.form.get('location');
-    if (control?.errors && (control.touched || control.dirty)) {
-      return control.errors['customError'] || null;
-    }
-    return null;
-  }
-
-  get locationTooltip(): string | undefined {
-    const control = this.form.get('location');
-
-    if (control?.hasError('locationIncomplete') && control.errors?.['missing']) {
-      const missing = control.errors['missing'].join('<br>&bull; ');
-      return `Faltan campos:<br>&bull; ${missing}`;
-    }
-
-    // Si es válido y ha sido tocado, no muestra tooltip
-    if (control?.valid && (control.touched || control.dirty)) {
-      // FIX: Devuelve 'undefined' en lugar de 'null'
-      return undefined;
-    }
-
-    // Estado inicial
-    return 'Selecciona tu ubicación completa, desde el país hasta el barrio/vereda.';
-  }
-
-  get locationTooltipVariant(): 'error' | 'info' {
-    const control = this.form.get('location');
-    if (control?.errors && (control.touched || control.dirty)) {
-      return 'error';
-    }
-    return 'info';
   }
 
   async onSubmit() {
@@ -151,12 +117,14 @@ export class Register implements OnInit {
     }
 
     const formValue = this.form.getRawValue();
-    const finalUsername = formValue.username || `${formValue.firstName || ''}${formValue.lastName || ''}`.replace(/\s/g, '').toLowerCase();
+    const finalUsername = formValue.username || `${formValue.firstName || ''}.${formValue.lastName || ''}`.replace(/\s/g, '').toLowerCase();
 
     const addressObj = formValue.location.address;
     const fullAddress = addressObj?.viaType && addressObj?.viaNumber ?
       `${addressObj.viaType} ${addressObj.viaNumber} # ${addressObj.crossStreetNumber} - ${addressObj.houseNumber}`
       : '';
+
+    console.log(formValue.location);
 
     const registerPayload = {
       firstName: formValue.firstName,
@@ -165,12 +133,16 @@ export class Register implements OnInit {
       documentCode: formValue.docType,
       genderCode: formValue.gender,
       birthDate: formValue.birthDate,
-      address: fullAddress,
-      neighborhoodId: formValue.location.neighborhoodId,
+      location: {
+        neighborhoodCode: formValue.location.neighborhoodCode,
+        address: `${formValue.location.address.viaType} ${formValue.location.address.viaNumber} ${formValue.location.address.crossStreetNumber} ${formValue.location.address.houseNumber}`,
+        addressComplement: formValue.location.addressComplement,
+        isCurrent: formValue.location.isCurrent
+      },
       user: {
-        user: finalUsername,
+        username: finalUsername,
         password: formValue.password,
-        mail: formValue.email,
+        email: formValue.email,
         cellular: formValue.phone?.replace(/\s/g, '')
       }
     };

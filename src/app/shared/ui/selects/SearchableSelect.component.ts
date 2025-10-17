@@ -1,18 +1,8 @@
-import {
-  Component,
-  Input,
-  forwardRef,
-  ElementRef,
-  HostListener,
-  ChangeDetectorRef,
-  OnChanges,
-  SimpleChanges,
-  Output, EventEmitter
-} from '@angular/core';
+import { Component, Input, forwardRef, ElementRef, HostListener, ChangeDetectorRef, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ChevronDown, LucideAngularModule, LucideIconData } from 'lucide-angular';
 import { CommonModule } from '@angular/common';
-import { BaseInputLabel} from '../input/label.component';
+import { BaseInputLabel } from '../input/label.component';
 import { ListItem } from '../../../core/models/TypeListItem.model';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
@@ -21,10 +11,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, LucideAngularModule, BaseInputLabel],
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => SearchableSelectComponent), multi: true }],
-  styles: [`
-    :host { display: block; }
-    .dropdown-options { max-height: 200px; overflow-y: auto; }
-  `],
+  styles: [` :host { display: block; } .dropdown-options { max-height: 200px; overflow-y: auto; } `],
   template: `
     <div class="w-full flex flex-col gap-2">
       <label-input [label]="label" [icon]="icon"></label-input>
@@ -130,8 +117,7 @@ export class SearchableSelectComponent implements ControlValueAccessor, OnChange
 
   private updateSelectedLabel(): void {
     if (this.options && this.options.length > 0 && this.selectedId) {
-      const selectedItem = this.options.find(option => option.code === this.selectedId);
-      this.selectedLabel = selectedItem ? selectedItem.name : null;
+      this.selectedLabel = this.options.find(option => option.code === this.selectedId)?.name ?? null;
     } else {
       this.selectedLabel = null;
     }
@@ -139,7 +125,6 @@ export class SearchableSelectComponent implements ControlValueAccessor, OnChange
   }
 
   private filterOptions(searchTerm: string): void {
-    const lowerCaseSearchTerm = searchTerm.toLowerCase();
-    this.filteredOptions = this.options.filter(option => option.name.toLowerCase().includes(lowerCaseSearchTerm));
+    this.filteredOptions = this.options.filter(option => option.name.toLowerCase().includes(searchTerm.toLowerCase()));
   }
 }
