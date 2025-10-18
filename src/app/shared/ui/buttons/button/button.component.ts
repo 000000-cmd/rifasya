@@ -57,7 +57,7 @@ export class ButtonComponent {
 
       /** 🟣 Nuevo estilo tipo PrimaryButton */
       fancy:
-        'bg-[#D946EF] hover:bg-[#C93DE0] text-white text-lg font-semibold px-8 py-3 rounded-lg transition-colors',
+        'bg-[#D946EF] hover:bg-[#C93DE0] text-white text-lg font-semibold px-8 py-3 rounded-lg transition-colors cursor-pointer',
 
       /** 💜 Nuevo estilo tipo SecondaryButton */
       soft:
@@ -67,17 +67,17 @@ export class ButtonComponent {
       heroPrimary:
         'bg-primary hover:bg-[var(--primary-hover)] text-white text-base px-8 py-3 rounded-lg font-semibold transition-colors',
 
-      heroPrimaryInverted: 
+      heroPrimaryInverted:
         'bg-white text-purple-600 px-8 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-colors',
 
       /** 💠 Hero secundario */
       heroSecondary:
         'border-2 border-purple-200 text-purple-600 hover:bg-purple-50 text-lg font-semibold px-8 py-3 rounded-lg  transition-all',
-      
-      heroSecondaryInverted: 
+
+      heroSecondaryInverted:
         'border-2 border-white text-white px-8 py-3 rounded-xl font-semibold hover:bg-white hover:text-purple-600 transition-colors',
 
-      
+
       /** ⚪ Variante neutra tipo "Ver Todas las Rifas" */
       neutral:
       'border-2 border-gray-300 text-gray-700 hover:bg-gray-50  font-semibold px-8 py-3 rounded-lg transition-colors',

@@ -77,6 +77,7 @@ export class LocationModalComponent implements OnInit {
       isCurrent: [true]
     });
   }
+
   @HostListener('document:mousedown', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     if (this.ready && !this.closing && !this.modalContentRef.nativeElement.contains(event.target)) {

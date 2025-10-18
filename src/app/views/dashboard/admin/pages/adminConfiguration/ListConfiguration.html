@@ -1,1 +1,25 @@
-<h2>asd</h2>
+<div class="m-10">
+  <div>
+    <h1 class="text-3xl mb-2 text-primary">
+      Configuracion de listas
+    </h1>
+    <h2 class="text-2xl mb-2 text-gray-500">
+      Configura todas las listas del sistema
+    </h2>
+  </div>
+
+  <div class="mt-8 overflow-x-auto bg-white rounded-lg shadow">
+    <app-custom-table [headers]="tableHeaders" [data]="tableItems">
+
+      <ng-template #actions let-item>
+        <a [routerLink]="['/lists', item.id]" title="Editar">
+          <app-button variant="fancy" size="icon">
+            <lucide-angular [img]="Pencil" class="w-4 h-4"></lucide-angular>
+          </app-button>
+        </a>
+      </ng-template>
+
+    </app-custom-table>
+  </div>
+</div>
+

@@ -112,7 +112,6 @@ $dark-theme: (
   --radius: 0.625rem;
   --accent-color: #F8A5FF;
   --accent-color2: #8b5cf6;
-  // Aplicamos el tema claro
   @include apply-theme($light-theme);
 }
 
@@ -184,7 +183,7 @@ $dark-theme: (
       font-weight: var(--font-weight-medium);
       line-height: 1.5;
     }
-    
+
     p, input {
       font-weight: var(--font-weight-normal);
       line-height: 1.5;

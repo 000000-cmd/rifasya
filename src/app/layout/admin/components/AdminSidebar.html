@@ -25,8 +25,8 @@
     </div>
 
     <!-- Sidebar -->
-    <aside [class]="'fixed lg:sticky top-0 left-0 h-screen w-64 bg-white border-r border-border transition-transform duration-300 z-40 ' + (isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0')">
-      <div class="flex flex-col h-full">
+    <aside [class]="'flex fixed lg:sticky top-0 left-0 h-screen bg-white border-r border-border transition-transform duration-300 z-40 ' + (isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0')" [class.w-128]="isSubMenuOpen" [class.w-64]="!isSubMenuOpen">
+      <div class="flex-1 flex-col h-full">
         <!-- Logo -->
         <div class="hidden lg:flex items-center gap-2 p-6 border-b border-border">
           <div class="w-10 h-10 rounded-xl  bg-[var(--primary-color)] flex items-center justify-center shadow-lg">
@@ -53,21 +53,24 @@
         </div>
 
         <!-- Navigation -->
-        <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
-          @for (item of menuItems; track item.id) {
+        <nav class="flex-1 p-4 overflow-y-auto">
+          @for (item of sideItems; track item.id) {
             <a
               [routerLink]="item.link"
               routerLinkActive="bg-primary text-white shadow-lg"
               [routerLinkActiveOptions]="{exact: item.link === '/dashboard/admin'}"
-              class="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group hover:bg-[var(--primary-color-light)] text-foreground"
-              (click)="handleLinkClick()" (mouseenter)="isSubMenuOpen = true" (mouseleave)="isSubMenuOpen = false"
+              class="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group hover:bg-[var(--primary-color-light)] hover:text-white text-foreground cursor-pointer"
+              (click)="handleLinkClick()"
             >
               <lucide-angular [name]="item.icon" class="group-hover:scale-110 transition-transform"></lucide-angular>
               <span class="flex-1 text-left">{{ item.label }}</span>
+              @if (item.subSections){
+                <lucide-angular [name]="Chevron" class="group-hover:scale-110 transition-transform" [class.rotate-180]="isSubMenuOpen"></lucide-angular>
+              }
               @if (item.badge) {
                 <span routerLinkActive="bg-white/20 text-white" class="px-2 py-1 rounded-full text-xs bg-primary/10 text-primary">
                             {{ item.badge }}
-                        </span>
+                </span>
               }
             </a>
           }
@@ -94,6 +97,29 @@
           </div>
         </div>
       </div>
+      @if (isSubMenuOpen){
+        <div #subMenu class="flex-1 flex-col h-full">
+          <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+            @for (item of subSectionsItems("config"); track item.id) {
+              <a
+                [routerLink]="item.link"
+                routerLinkActive="bg-primary text-white shadow-lg"
+                [routerLinkActiveOptions]="{exact: item.link === '/dashboard/admin'}"
+                class="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group hover:bg-[var(--primary-color-light)] hover:text-white text-foreground cursor-pointer"
+                (click)="handleLinkClick()" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()"
+              >
+                <lucide-angular [name]="item.icon" class="group-hover:scale-110 transition-transform"></lucide-angular>
+                <span class="flex-1 text-left">{{ item.label }}</span>
+                @if (item.badge) {
+                  <span routerLinkActive="bg-white/20 text-white" class="px-2 py-1 rounded-full text-xs bg-primary/10 text-primary">
+                            {{ item.badge }}
+                </span>
+                }
+              </a>
+            }
+          </nav>
+        </div>
+      }
     </aside>
 
 

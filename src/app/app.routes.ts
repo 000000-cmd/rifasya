@@ -7,6 +7,7 @@ import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
 import {RoleRedirectGuard} from './core/guards/redirect.guard';
 import {publicGuard} from './core/guards/public.guard';
+import {ListConfigurationComponent} from './views/dashboard/admin/pages/adminConfiguration/ListConfiguration.component';
 
 export const routes: Routes = [
   // --- Rutas Públicas (usan el PublicLayout) ---
@@ -65,6 +66,10 @@ export const routes: Routes = [
         ]
       }
     ]
+  },
+  {
+    path: 'test',
+    component: ListConfigurationComponent
   },
 
   // --- Ruta Fallback (Cualquier otra URL) ---
