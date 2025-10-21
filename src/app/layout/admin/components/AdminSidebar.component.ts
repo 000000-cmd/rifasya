@@ -1,13 +1,10 @@
-import {Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild, viewChild} from '@angular/core';
+import { Component, ElementRef, HostListener, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import {
-  CircleQuestionMark,
-  LucideAngularModule,
-  ChevronRight
-} from 'lucide-angular';
+import { LucideAngularModule, ChevronRight } from 'lucide-angular';
 import packageInfo from '../../../../../package.json';
-import {sideItems, subSectionsItems} from '../../../shared/utils/adminMenuItemsReferences';
+import { sideItems, subSectionsItems } from '../../../shared/utils/adminMenuItemsReferences';
+import { UiStateService} from '../../../core/services/uiState.service';
 
 @Component({
   selector: 'app-admin-sidebar',
@@ -16,44 +13,42 @@ import {sideItems, subSectionsItems} from '../../../shared/utils/adminMenuItemsR
   templateUrl: "./AdminSidebar.html"
 })
 export class AdminSidebarComponent {
+  public uiState = inject(UiStateService);
   public appVersion: string = `v${packageInfo.version}`;
   readonly Chevron = ChevronRight;
 
-  @Input() isMobileMenuOpen: boolean = false;
-  @Input() isSubMenuOpen: boolean = false;
-  @Output() mobileMenuToggle = new EventEmitter<void>();
+  @ViewChild('sidebarWrapper') sidebarWrapperRef!: ElementRef;
 
-  @ViewChild('#subMenu') subMenuRef!: ElementRef;
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
-    if(this.isSubMenuOpen && !this.subMenuRef.nativeElement.contains(event.target)){
-      this.isSubMenuOpen = false;
+    if (this.uiState.isSubMenuOpen() && this.sidebarWrapperRef?.nativeElement && !this.sidebarWrapperRef.nativeElement.contains(event.target)) {
+      this.uiState.closeSubMenu();
     }
   }
-
-
-
-
 
   toggleMobileMenu(): void {
-    this.mobileMenuToggle.emit();
+    this.uiState.toggleMobileMenu();
   }
 
-  handleLinkClick(): void {
-    if (this.isMobileMenuOpen) {
-      this.toggleMobileMenu();
+  handleLinkClick(item: any): void {
+    if (!item.subSections) {
+      this.uiState.closeMobileMenu();
+      this.uiState.closeSubMenu();
     }
-    this.isSubMenuOpen = !this.isSubMenuOpen;
   }
 
-  onMouseEnter(){
-    this.isSubMenuOpen = true
+  handleSubMenuLinkClick(): void {
+    this.uiState.closeSubMenu();
+    this.uiState.closeMobileMenu();
   }
 
-  onMouseLeave(){
-    this.isSubMenuOpen = false
+  onMouseEnter(item: any): void {
+    if (item.subSections) {
+      this.uiState.openSubMenu();
+    }
   }
 
   protected readonly sideItems = sideItems;
   protected readonly subSectionsItems = subSectionsItems;
+  protected hasAnyNotification: boolean = true;
 }

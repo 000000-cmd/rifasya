@@ -40,6 +40,8 @@ export class ButtonComponent {
   @Input() textSize: 'sm' | 'base' | 'lg' | 'xl' = 'base';
   @Input() textWeight: 'light' | 'normal' | 'medium' | 'semibold' | 'bold' = 'normal';
 
+  @Input() disabled: boolean = false;
+
 
 
   /** Genera las clases Tailwind según la variante */
@@ -61,26 +63,26 @@ export class ButtonComponent {
 
       /** 💜 Nuevo estilo tipo SecondaryButton */
       soft:
-        'border-2 border-purple-200 text-purple-600 hover:bg-purple-50 text-lg font-semibold px-8 py-3 rounded-lg transition-colors',
+        'border-2 border-purple-200 text-purple-600 hover:bg-purple-50 text-lg font-semibold px-8 py-3 rounded-lg transition-colors cursor-pointer',
 
       /** ✨ Hero principal */
       heroPrimary:
-        'bg-primary hover:bg-[var(--primary-hover)] text-white text-base px-8 py-3 rounded-lg font-semibold transition-colors',
+        'bg-primary hover:bg-[var(--primary-hover)] text-white text-base px-8 py-3 rounded-lg font-semibold transition-colors cursor-pointer',
 
       heroPrimaryInverted:
-        'bg-white text-purple-600 px-8 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-colors',
+        'bg-white text-purple-600 px-8 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-colors cursor-pointer',
 
       /** 💠 Hero secundario */
       heroSecondary:
-        'border-2 border-purple-200 text-purple-600 hover:bg-purple-50 text-lg font-semibold px-8 py-3 rounded-lg  transition-all',
+        'border-2 border-purple-200 text-purple-600 hover:bg-purple-50 text-lg font-semibold px-8 py-3 rounded-lg  transition-all cursor-pointer',
 
       heroSecondaryInverted:
-        'border-2 border-white text-white px-8 py-3 rounded-xl font-semibold hover:bg-white hover:text-purple-600 transition-colors',
+        'border-2 border-white text-white px-8 py-3 rounded-xl font-semibold hover:bg-white hover:text-purple-600 transition-colors cursor-pointer',
 
 
       /** ⚪ Variante neutra tipo "Ver Todas las Rifas" */
       neutral:
-      'border-2 border-gray-300 text-gray-700 hover:bg-gray-50  font-semibold px-8 py-3 rounded-lg transition-colors',
+      'border-2 border-gray-300 text-gray-700 hover:bg-gray-50  font-semibold px-8 py-3 rounded-lg transition-colors cursor-pointer',
     };
 
     const sizes: Record<string, string> = {

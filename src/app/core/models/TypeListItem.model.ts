@@ -3,5 +3,6 @@ export interface ListItem {
   code: string;
   name: string;
   order: number;
+  indicatorEnabled?: boolean;
   payload?: any;
 }

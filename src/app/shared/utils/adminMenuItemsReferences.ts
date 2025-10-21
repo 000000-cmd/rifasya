@@ -5,7 +5,7 @@ import {
   CircleQuestionMark,
   DollarSign,
   LayoutDashboard,
-  Megaphone,
+  Megaphone, RectangleEllipsis,
   Ticket,
   TrendingUp,
   Trophy,
@@ -20,6 +20,7 @@ export interface MenuItem {
   badge?: number;
   subSections?: boolean;
   secondIcon?: any;
+  hasNotification?: boolean;
 }
 
 const menuData: MenuItem[] = [
@@ -31,12 +32,13 @@ const menuData: MenuItem[] = [
   { id: 'winners',      label: 'Ganadores',         icon: Trophy,             link: '/dashboard/admin/' },
   { id: 'marketing',    label: 'Marketing',         icon: Megaphone,          link: '/dashboard/admin/' },
   { id: 'reports',      label: 'Reportes',          icon: ChartColumn,        link: '/dashboard/admin/' },
-  { id: 'notify',       label: 'Notificaciones',    icon: Bell,               link: '/dashboard/admin/' },
+  { id: 'notify',       label: 'Notificaciones',    icon: Bell,               link: '/dashboard/admin/', hasNotification: true},
   { id: 'config',       label: 'Configuracion',     icon: CircleQuestionMark, subSections: true },
 ];
 
 const configItems: MenuItem[] = [
-  { id: 'lists',        label: 'Listas',            icon: CircleQuestionMark, link: '/dashboard/admin/lists' }
+  { id: 'lists',        label: 'Listas',            icon: CircleQuestionMark, link: '/dashboard/admin/lists' },
+  { id: 'constants',    label: 'Constantes',        icon: RectangleEllipsis, link: '/dashboard/admin/constants' }
 ];
 
 export const sideItems: MenuItem[] = menuData.map(item => {

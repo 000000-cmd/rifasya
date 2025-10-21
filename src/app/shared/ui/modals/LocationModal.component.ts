@@ -1,10 +1,10 @@
 import { Component, OnInit, Output, EventEmitter, Input, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { LocationApiService, LocationSearchDTO } from '../../core/services/location.service';
-import { SearchableSelectComponent } from './selects/SearchableSelect.component';
-import { ListItem } from '../../core/models/TypeListItem.model';
-import { StructuredAddressComponent } from './StructureAddress.component';
+import { LocationApiService, LocationSearchDTO } from '../../../core/services/location.service';
+import { SearchableSelectComponent } from '../selects/SearchableSelect.component';
+import { ListItem } from '../../../core/models/TypeListItem.model';
+import { StructuredAddressComponent } from '../StructureAddress.component';
 
 @Component({
   selector: 'app-location-modal',

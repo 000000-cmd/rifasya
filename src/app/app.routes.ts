@@ -1,66 +1,88 @@
 import { Routes } from '@angular/router';
 import { PublicLayoutComponent } from './layout/PublicLayout.component';
 import { Home } from './views/home/home.component';
-import { Register } from './views/auth/register/Register.component';
-import { Login } from './views/auth/login/Login.component';
+import { Login} from './views/auth/login/Login.component';
+import { Register} from './views/auth/register/Register.component';
 import { authGuard } from './core/guards/auth.guard';
+import { publicGuard } from './core/guards/public.guard';
+import { RoleRedirectGuard} from './core/guards/redirect.guard';
 import { adminGuard } from './core/guards/admin.guard';
-import {RoleRedirectGuard} from './core/guards/redirect.guard';
-import {publicGuard} from './core/guards/public.guard';
-import {ListConfigurationComponent} from './views/dashboard/admin/pages/adminConfiguration/ListConfiguration.component';
+import { ListEditComponent } from './views/dashboard/admin/pages/adminConfiguration/lists/listConfigPages/ListEdit.component';
 
 export const routes: Routes = [
-  // --- Rutas Públicas (usan el PublicLayout) ---
+  // --- Rutas Públicas ---
   {
     path: '',
     component: PublicLayoutComponent,
     children: [
       { path: '', component: Home, pathMatch: 'full' },
-      // 2. Aplica el guardián a las rutas de login y registro
-      { path: 'login',
+      {
+        path: 'login',
         component: Login,
-        canActivate: [publicGuard]
+        canActivate: [publicGuard],
+        data: { breadcrumb: 'Iniciar Sesión' }
       },
-      { path: 'register',
+      {
+        path: 'register',
         component: Register,
-        canActivate: [publicGuard]
+        canActivate: [publicGuard],
+        data: { breadcrumb: 'Crear Cuenta' }
       },
       {
         path: 'status',
         title: 'Estado del Servicio',
-        loadComponent: () => import('./layout/ServiceStatus.component').then(m => m.ServiceStatusComponent)
+        loadComponent: () => import('./layout/ServiceStatus.component').then(m => m.ServiceStatusComponent),
+        data: { breadcrumb: 'Estado del Servicio' }
       },
     ]
   },
 
-  // --- Rutas Protegidas (usan el DashboardLayout) ---
+  // --- Rutas Protegidas ---
   {
     path: 'dashboard',
     loadComponent: () => import('./layout/DashboardLayout.component').then(m => m.DashboardLayoutComponent),
     canActivate: [authGuard],
+    data: { breadcrumb: 'Dashboard' },
     children: [
-      // 1. La ruta de entrada al dashboard. Su único trabajo es activar el RoleRedirectGuard.
       { path: '', canActivate: [RoleRedirectGuard], children:[] },
 
-      // 2. Rutas de Administrador (protegidas por el adminGuard)
+      // Rutas de Administrador
       {
         path: 'admin',
         canActivate: [adminGuard],
+        data: { breadcrumb: 'Administración' },
         children: [
           {
             path: '',
-            loadComponent: () => import('./views/dashboard/admin/pages/adminDashboard/adminDashboard.component').then(m => m.AdminDashboardComponent)
+            loadComponent: () => import('./views/dashboard/admin/pages/adminDashboard/adminDashboard.component').then(m => m.AdminDashboardComponent),
           },
           {
             path: 'lists',
-            loadComponent: () => import('./views/dashboard/admin/pages/adminConfiguration/ListConfiguration.component').then(m => m.ListConfigurationComponent)
+            data: { breadcrumb: 'Configuración de Listas' },
+            children: [
+              {
+                path: '',
+                loadComponent: () => import('./views/dashboard/admin/pages/adminConfiguration/lists/ListConfiguration.component').then(m => m.ListConfigurationComponent)
+              },
+              {
+                path: ':id',
+                loadComponent: () => import('./views/dashboard/admin/pages/adminConfiguration/lists/listConfigPages/ListEdit.component').then(m => m.ListEditComponent),
+                data: { breadcrumb: 'Editar' }
+              }
+            ]
           },
+          {
+            path: 'constants',
+            data: { breadcrumb: 'Constantes' },
+            loadComponent: () => import('./views/dashboard/admin/pages/adminConfiguration/constants/ConstantsList.component').then(m => m.ConstantsListComponent)
+          }
         ]
       },
 
-      // 3. Rutas de Usuario
+      // Rutas de Usuario
       {
         path: 'user',
+        data: { breadcrumb: 'Mi Panel' }, // <-- Añadido
         children: [
           { path: '', loadComponent: () => import('./views/dashboard/user/pages/userDashboard/userDashboard.component').then(m => m.UserDashboardComponent) },
         ]
@@ -68,10 +90,10 @@ export const routes: Routes = [
     ]
   },
   {
-    path: 'test',
-    component: ListConfigurationComponent
+    path: 'test/:id',
+    component: ListEditComponent,
+    data: { breadcrumb: 'Prueba' } // <-- Añadido
   },
 
-  // --- Ruta Fallback (Cualquier otra URL) ---
   { path: '**', redirectTo: '' }
 ];

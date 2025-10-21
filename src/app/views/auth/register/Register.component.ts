@@ -9,14 +9,14 @@ import { CardContentComponent } from "../../../shared/ui/card/card-content.compo
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import {optionalMinLength, ValidadorInput} from "../../../shared/utils/validarInput";
 import { passwordMatchValidator } from "../../../shared/utils/validatePassword";
-import {ListsItemsService} from '../../../core/services/listsItemsService.service';
+import {ListsItemsService} from '../../../core/services/listsItems.service';
 import {BaseSelectComponent} from '../../../shared/ui/selects/BaseSelectComponent.component';
 import {CheckboxComponent} from '../../../shared/ui/checkbox/CheckBox.component';
 import {AuthService} from '../../../core/services/auth.service';
 import {AlertService} from '../../../core/services/alert.service';
 import {CustomDatepickerComponent} from '../../../shared/ui/CustomDatePicker.component';
 import {LocationInputComponent} from '../../../shared/ui/input/LocationInput.component';
-import {LocationModalComponent} from '../../../shared/ui/LocationModal.component';
+import {LocationModalComponent} from '../../../shared/ui/modals/LocationModal.component';
 import {validateLocation} from '../../../shared/utils/ValidateLocation';
 
 @Component({

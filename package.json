@@ -1,6 +1,6 @@
 {
   "name": "rifasya",
-  "version": "0.1.0RC1",
+  "version": "0.4.0RC1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -23,6 +23,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular/cdk": "^20.2.9",
     "@angular/common": "^20.3.0",
     "@angular/compiler": "^20.3.0",
     "@angular/core": "^20.3.0",
