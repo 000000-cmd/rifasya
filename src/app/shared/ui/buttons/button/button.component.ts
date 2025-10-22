@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { NgClass } from '@angular/common';
 
 @Component({
@@ -6,7 +6,12 @@ import { NgClass } from '@angular/common';
   standalone: true,
   imports: [NgClass],
   template: `
-    <button [attr.type]="type" [ngClass]="buttonClasses">
+    <button
+      [attr.type]="type"
+      [ngClass]="buttonClasses"
+      [attr.form]="form"
+      [disabled]="disabled"
+      (click)="onClick($event)">
       <ng-content></ng-content>
     </button>
   `,
@@ -42,7 +47,18 @@ export class ButtonComponent {
 
   @Input() disabled: boolean = false;
 
+  @Input() form: string | null = null;
 
+  @Output() click = new EventEmitter<MouseEvent>();
+
+  onClick(event: MouseEvent): void {
+    if (this.disabled) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+    this.click.emit(event);
+  }
 
   /** Genera las clases Tailwind según la variante */
   get buttonClasses(): string {
@@ -51,8 +67,8 @@ export class ButtonComponent {
 
     const variants: Record<string, string> = {
       default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-      destructive: 'bg-red-600 text-white hover:bg-red-700',
-      outline: 'border border-gray-300 hover:bg-gray-100',
+      destructive: 'bg-red-600 text-white hover:bg-red-700 rounded-md cursor-pointer',
+      outline: 'border border-gray-300 hover:bg-gray-100 rounded-md cursor-pointer p-3',
       secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200',
       ghost: 'hover:bg-gray-100 text-gray-700',
       link: 'text-primary underline hover:underline-offset-4',

@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import {ListItem} from '../models/TypeListItem.model';
-import {GET} from '../api/Api';
+import {DELETE_REQ, GET, PATCH, POST, PUT} from '../api/Api';
 import {DataFetch} from '../api/DataFetch';
 import {ListRegistryModel} from '../models/ListRegistry.model';
 import {ListConfigModel} from '../models/ListConfig.model';
@@ -78,54 +78,64 @@ export class ListsItemsService {
       .finally(() => this.isLoading.set(false));
   }
 
-  async loadList(id: string): Promise<void> {
-    // 1. Evita recargar la misma lista si ya está seleccionada
-    if (this.list().listRegistry.id === id) {
-      return Promise.resolve();
+  async loadList(id: string, forceRefresh: boolean = false): Promise<void> {
+    if (this.list().listRegistry.id === id && !forceRefresh) {
+      return;
     }
 
     this.isLoading.set(true);
-
     try {
-      // --- PRIMERA LLAMADA: Obtener el registro de la lista ---
       const registryResponse = await GET(new DataFetch(`lists/listregistry/${id}`));
-
-      if (!registryResponse.ok) {
-        throw new Error(`Failed to fetch list registry: ${registryResponse.statusText}`);
-      }
-
+      if (!registryResponse.ok) throw new Error(`Failed to fetch list registry`);
       const registryData: ListRegistryModel = await registryResponse.json();
 
-      // Actualiza la primera parte del signal
-      this.list.update(currentConfig => ({
-        ...currentConfig,
-        listRegistry: registryData
-      }));
-
-      // --- SEGUNDA LLAMADA: Obtener los items de la lista ---
-      const technicalName = registryData.technicalName.toLowerCase();
-      const itemsResponse = await GET(new DataFetch(`lists/${technicalName}`));
-
-      if (!itemsResponse.ok) {
-        throw new Error(`Failed to fetch list items: ${itemsResponse.statusText}`);
-      }
-
+      const itemsResponse = await GET(new DataFetch(`lists/${registryData.technicalName.toLowerCase()}`));
+      if (!itemsResponse.ok) throw new Error(`Failed to fetch list items`);
       const itemsData: ListItem[] = await itemsResponse.json();
 
-      // Actualiza la segunda parte del signal con los items
-      this.list.update(currentConfig => ({
-        ...currentConfig,
-        listItems: itemsData
-      }));
-
+      this.list.set({ listRegistry: registryData, listItems: itemsData });
     } catch (error) {
       console.error('Failed to load list data', error);
-      // Limpia el estado en caso de error para no mostrar datos incorrectos
       this.list.set(this.initialListConfig);
-      return Promise.reject(error);
+      throw error;
     } finally {
-      // Asegúrate de que el loading siempre se desactive
       this.isLoading.set(false);
+    }
+  }
+
+  async saveListItem(listTechnicalName: string, item: Partial<ListItem>): Promise<ListItem> {
+    const isNew = !item.id || item.id === '--is-new--';
+    const endpoint = isNew
+      ? `lists/${listTechnicalName.toLowerCase()}`
+      : `lists/${listTechnicalName.toLowerCase()}/${item.id}`;
+    const apiCall = isNew ? POST : PUT;
+
+    if (isNew) delete item.id;
+
+    const response = await apiCall(new DataFetch(endpoint, item));
+    if (!response.ok) {
+      throw new Error(`Failed to save item: ${response.statusText}`);
+    }
+    return await response.json();
+  }
+
+  async updateOrder(listTechnicalName: string, orderedIds: string[]): Promise<void> {
+    // Evita enviar una petición si no hay IDs que ordenar
+    if (!orderedIds || orderedIds.length === 0) {
+      return Promise.resolve();
+    }
+    const endpoint = `lists/${listTechnicalName.toLowerCase()}/reorder`;
+    const response = await PATCH(new DataFetch(endpoint, orderedIds));
+    if (!response.ok) {
+      throw new Error(`Failed to reorder items: ${response.statusText}`);
+    }
+  }
+
+  async deleteListItem(listTechnicalName: string, itemId: string): Promise<void> {
+    const endpoint = `lists/${listTechnicalName.toLowerCase()}/${itemId}`;
+    const response = await DELETE_REQ(new DataFetch(endpoint));
+    if (!response.ok) {
+      throw new Error(`Failed to delete item: ${response.statusText}`);
     }
   }
 }

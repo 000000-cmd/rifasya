@@ -15,6 +15,14 @@ export interface Alert {
   display: AlertDisplay;
 }
 
+export interface ConfirmActionOptions {
+  title: string;
+  message: string;
+  confirmButtonText?: string;
+  cancelButtonText?: string;
+  onConfirm: () => Promise<any>;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -62,28 +70,25 @@ export class AlertService {
 
   confirm(title: string, message: string): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      // 1. Crea una instancia del componente del modal
-      const componentRef = createComponent(ConfirmModalComponent, {
-        environmentInjector: this.injector
-      });
+      const componentRef = createComponent(ConfirmModalComponent, { environmentInjector: this.injector });
 
-      // 2. Le pasa el título y el mensaje
+      // Se configuran los textos básicos. Ya no necesita 'isSaving'.
       componentRef.instance.title = title;
       componentRef.instance.message = message;
 
-      // 3. Lo añade al DOM de la aplicación
       document.body.appendChild(componentRef.location.nativeElement);
       this.appRef.attachView(componentRef.hostView);
 
-      // 4. Se suscribe al evento 'result' del modal
+      // El subscribe se encarga de destruir el componente y resolver la promesa.
       const sub = componentRef.instance.result.subscribe(result => {
         sub.unsubscribe();
         this.appRef.detachView(componentRef.hostView);
-        componentRef.destroy(); // Destruye el componente para limpiar la memoria
-        resolve(result); // Devuelve 'true' o 'false'
+        componentRef.destroy();
+        resolve(result);
       });
     });
   }
+
 
   // --- Métodos Privados ---
 
@@ -102,6 +107,7 @@ export class AlertService {
       this.toastTimeout = null;
     }, 3000);
   }
+
 
   hide(): void {
     this.alertSubject.next(null);
